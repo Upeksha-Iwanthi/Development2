@@ -1,17 +1,11 @@
 package com.example.demo;
 
-import com.example.demo.persistance.*;
 import com.example.demo.repository.*;
-import org.junit.Assert;
-import org.junit.Test;
+import com.example.demo.service.SourceModuleService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,10 +18,10 @@ public class DemoApplicationTests {
 	FunctionalAreaRepository functionalAreaRepository;
 
 	@Autowired
-	ProductAreaRepository productAreaRepository;
+	SourceModuleRepository sourceModuleRepository;
 
 	@Autowired
-	SourceModuleRepository sourceModuleRepository;
+	SourceModuleService sourceModuleService;
 
 	@Autowired
 	FunctionalAreaClassRepository functionalAreaClassRepository;
@@ -70,16 +64,23 @@ public class DemoApplicationTests {
 //
 //	}
 
-	@Test
-	public void saveFACDataTest(){
-		List<FunctionalArea> functionalAreas = functionalAreaRepository.findByName("fa1");
-		List<ModuleClass> moduleClasses =moduleClassRepository.findByModule("module1");
-		FunctionalAreaClass functionalAreaClass1 = new FunctionalAreaClass(100,functionalAreas.get(0));
+//	@Test
+//	public void saveFACDataTest(){
+//		List<FunctionalArea> functionalAreas = functionalAreaRepository.findByName("fa1");
+//		List<ModuleClass> moduleClasses =moduleClassRepository.findByModule("module1");
+//		FunctionalAreaClass functionalAreaClass1 = new FunctionalAreaClass(100);
+//
+//		functionalAreaClass1.setFunctionalArea(functionalAreas.get(0));
+//		functionalAreaClass1.setModuleClass(moduleClasses.get(0));
+//		functionalAreaClassRepository.save(functionalAreaClass1);
+//		Assert.assertNotNull(functionalAreaClassRepository.findOne(Long.valueOf(1)));
+//	}
 
-		functionalAreaClass1.setModuleClass(moduleClasses.get(0));
-		functionalAreaClassRepository.save(functionalAreaClass1);
-		Assert.assertNotNull(functionalAreaClassRepository.findOne(Long.valueOf(1)));
-	}
+//	@Test
+//	public void saveSMDataTest(){
+//		sourceModuleService.saveData();
+//		Assert.assertNotNull(sourceModuleRepository.findOne(Long.valueOf(1)));
+//	}
 //
 //	@Test
 //	public void saveFADataTest(){

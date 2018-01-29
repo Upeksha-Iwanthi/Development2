@@ -1,10 +1,8 @@
-package com.example.demo.persistance;
-import org.json.JSONArray;
+package com.example.demo.persistence;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Table
 @Entity
@@ -15,7 +13,7 @@ public class FunctionalAreaClass {
 
     private long jiraIssueId;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "functionalArea_id")
     private FunctionalArea functionalArea;
 
@@ -62,7 +60,6 @@ public class FunctionalAreaClass {
         this.moduleClass = moduleClass;
     }
 
-
     public FunctionalArea getFunctionalArea() {
         return functionalArea;
     }
@@ -71,7 +68,7 @@ public class FunctionalAreaClass {
         this.functionalArea = functionalArea;
     }
 
-    @Override
+//    @Override
     public String toString(){
         String info = "";
         JSONObject jsonInfo = new JSONObject();
@@ -88,10 +85,16 @@ public class FunctionalAreaClass {
             e.printStackTrace();
         }
         JSONObject functionalAreaObj = new JSONObject();
+        JSONObject productAreaObj = new JSONObject();
+
+        try {
+            productAreaObj.put("name",this.functionalArea.getProductArea().getName());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         try {
             functionalAreaObj.put("name",this.functionalArea.getName());
-            functionalAreaObj.put("productArea",this.functionalArea.getProductArea());
-            functionalAreaObj.put("functionalAreaClass",this.functionalArea.getFunctionalAreaClass());
+            functionalAreaObj.put("productArea",productAreaObj);
         } catch (JSONException e) {
             e.printStackTrace();
         }

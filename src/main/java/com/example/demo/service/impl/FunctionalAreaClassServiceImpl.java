@@ -1,8 +1,8 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.persistance.FunctionalArea;
-import com.example.demo.persistance.FunctionalAreaClass;
-import com.example.demo.persistance.ModuleClass;
+import com.example.demo.persistence.FunctionalArea;
+import com.example.demo.persistence.FunctionalAreaClass;
+import com.example.demo.persistence.ModuleClass;
 import com.example.demo.repository.FunctionalAreaClassRepository;
 import com.example.demo.repository.FunctionalAreaRepository;
 import com.example.demo.repository.ModuleClassRepository;
@@ -10,9 +10,7 @@ import com.example.demo.service.FunctionalAreaClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class FunctionalAreaClassServiceImpl implements FunctionalAreaClassService{

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.persistance.SourceModule;
+import com.example.demo.persistence.SourceModule;
 import com.example.demo.repository.SourceModuleRepository;
 import com.example.demo.service.SourceModuleService;
 import org.springframework.beans.factory.annotation.Autowired;

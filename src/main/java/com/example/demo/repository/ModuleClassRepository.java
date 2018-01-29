@@ -1,6 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.persistance.ModuleClass;
+import com.example.demo.persistence.ModuleClass;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

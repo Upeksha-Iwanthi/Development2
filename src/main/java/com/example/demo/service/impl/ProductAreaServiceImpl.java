@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.persistance.ProductArea;
+import com.example.demo.persistence.ProductArea;
 import com.example.demo.repository.ProductAreaRepository;
 import com.example.demo.service.ProductAreaService;
 import org.springframework.beans.factory.annotation.Autowired;

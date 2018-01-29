@@ -1,6 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.persistance.ProductArea;
+import com.example.demo.persistence.ProductArea;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.example.demo.persistance;
+package com.example.demo.persistence;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,11 +29,6 @@ public class ModuleClass {
         this.classPath = classPath;
     }
 
-//    public ModuleClass(String module, String classPath, Set<FunctionalAreaClass> functionalAreaClasses){
-//        this.module = module;
-//        this.classPath = classPath;
-//        this.functionalAreaClasses = functionalAreaClasses;
-//    }
 
     public long getId() {
         return id;

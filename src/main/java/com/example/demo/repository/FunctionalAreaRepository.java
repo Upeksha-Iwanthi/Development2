@@ -1,6 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.persistance.FunctionalArea;
+import com.example.demo.persistence.FunctionalArea;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

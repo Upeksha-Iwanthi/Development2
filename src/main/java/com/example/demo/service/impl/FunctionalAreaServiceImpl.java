@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.persistance.FunctionalArea;
-import com.example.demo.persistance.ProductArea;
+import com.example.demo.persistence.FunctionalArea;
+import com.example.demo.persistence.ProductArea;
 import com.example.demo.repository.FunctionalAreaRepository;
 import com.example.demo.repository.ProductAreaRepository;
 import com.example.demo.service.FunctionalAreaService;
