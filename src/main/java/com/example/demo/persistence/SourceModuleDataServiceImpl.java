@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PersistenceServiceImpl implements PersistenceService {
+public class SourceModuleDataServiceImpl implements SourceModuleDataService {
 
     @Autowired
     SourceModuleRepository sourceModuleRepository;

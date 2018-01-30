@@ -5,6 +5,7 @@ import com.example.demo.persistence.SourceModule;
 import com.example.demo.service.apps.SVNReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.tmatesoft.svn.core.SVNException;
 
 import java.util.*;
 
@@ -15,9 +16,9 @@ public class SVNServiceImpl implements SVNService {
     SVNReader svnReader;
 
     @Override
-    public Set<SVNData> findModifications(SourceModule branch, final Map<String,String> propertyHolder){
+    public Set<SVNData> findModifications(SourceModule branch) throws SVNException{
 
-        return svnReader.getHistory(branch.getSvnURL(),branch.getRevision(),propertyHolder);
+        return svnReader.getHistory(branch.getSvnURL(),branch.getRevision());
 
     }
 

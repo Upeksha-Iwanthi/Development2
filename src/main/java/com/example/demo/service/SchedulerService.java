@@ -1,5 +1,5 @@
 package com.example.demo.service;
 
-public interface MainService {
+public interface SchedulerService {
     void updateFunctionalArea() throws Exception;
 }

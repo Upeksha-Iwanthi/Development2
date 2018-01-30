@@ -1,9 +1,13 @@
 package com.example.demo.service.apps;
 
+import com.example.demo.Data.IssueIdFilter;
 import com.example.demo.Data.SVNData;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNLogEntry;
+import org.tmatesoft.svn.core.io.SVNRepository;
 
 import java.util.*;
 @Component
@@ -15,19 +19,18 @@ public class SVNReader {
 
 
 
-    public Set<SVNData> getHistory(String url, Long processedRevision, final Map<String,String> propertyHolder) throws SVNException {
+    public Set<SVNData> getHistory(String url, Long processedRevision) throws SVNException {
         Set<SVNData> totalRowSet = new HashSet<>();
 
         SVNRepository repository = mySvnRepositoryFactory.create(url);
         long latestRevision = repository.getLatestRevision();
-        propertyHolder.put("LatestRev",latestRevision+"");
+
         if (repository == null)
         {
             System.out.println("Can't create repo for " + url);
         }
         @SuppressWarnings("unchecked")
-        Collection<SVNLogEntry> logEntries = repository.log(new String[]{}, null, processedRevision, latestRevision, true,
-                true);
+        Collection<SVNLogEntry> logEntries = repository.log(new String[]{},null, processedRevision, latestRevision, true, true);
         for (SVNLogEntry svnLogEntry : logEntries) {
             String message = svnLogEntry.getMessage();
             List<String> issueList = IssueIdFilter.getValidIssueIds(message);
@@ -36,10 +39,10 @@ public class SVNReader {
         return totalRowSet;
     }
 
-    public Long getLatestRevision(String url) throws SVNException {
-        SVNRepository repository = mySvnRepositoryFactory.create(url);
-        return repository.getLatestRevision();
-    }
+//    public Long getLatestRevision(String url) throws SVNException {
+//        SVNRepository repository = mySvnRepositoryFactory.create(url);
+//        return repository.getLatestRevision();
+//    }
 
     private static Set<SVNData> makeRowData(List<String> issueList, List<String> classList) {
         Set<SVNData> rowSet = new HashSet<>();

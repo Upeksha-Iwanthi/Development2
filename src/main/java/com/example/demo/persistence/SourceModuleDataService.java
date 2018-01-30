@@ -2,7 +2,7 @@ package com.example.demo.persistence;
 
 import java.util.List;
 
-public interface PersistenceService {
+public interface SourceModuleDataService {
     List<SourceModule> getConfiguredBranchList();
 
 }
