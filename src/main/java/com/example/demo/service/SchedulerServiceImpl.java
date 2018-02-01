@@ -54,8 +54,6 @@ public class SchedulerServiceImpl implements SchedulerService {
                     branch.setRevision(01);
                 }
 
-                final Map<String,String> propertyHolder = new HashMap<>();
-
                 final Set<SVNData> svnData = svnService.findModifications(branch);
 
                 for (final SVNData svnRow: svnData){
