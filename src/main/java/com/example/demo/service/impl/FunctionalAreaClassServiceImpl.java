@@ -31,6 +31,6 @@ public class FunctionalAreaClassServiceImpl implements FunctionalAreaClassServic
         FunctionalAreaClass functionalAreaClass1 = new FunctionalAreaClass(100,functionalAreas.get(0));
 
         functionalAreaClass1.setModuleClass(moduleClasses.get(0));
-        functionalAreaClassRepository.save(functionalAreaClass1);
+//        functionalAreaClassRepository.save(functionalAreaClass1);
     }
 }

@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Table(name = "product_area")
@@ -18,13 +19,17 @@ public class ProductArea {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "productArea")
-    private Set<FunctionalArea> fa;
+    private List<FunctionalArea> fa;
 
     public ProductArea(){
     }
 
     public ProductArea(String name){this.name = name;}
 
+    public ProductArea(String name, List<FunctionalArea> fa){
+        this.name = name;
+        this.fa = fa;
+    }
 
     public long getId() {
         return id;
@@ -42,11 +47,11 @@ public class ProductArea {
         this.name = name;
     }
 
-    public Set<FunctionalArea> getFa() {
+    public List<FunctionalArea> getFa() {
         return fa;
     }
 
-    public void setFa(Set<FunctionalArea> fa) {
+    public void setFa(List<FunctionalArea> fa) {
         this.fa = fa;
     }
 

@@ -16,8 +16,8 @@ public class SourceModuleServiceImpl implements SourceModuleService {
     @Override
     public void saveData(){
         SourceModule sm = new SourceModule();
-        sm.setSvnURL("https://subversion.cambio.se/PC/Standard/CraftModuleClient/branches/R8.1_CraftModuleClient_Int");
-        sourceModuleRepository.save(sm);
+//        sm.setSvnURL("https://subversion.cambio.se/PC/Standard/CraftModuleClient/branches/R8.1_CraftModuleClient_Int");
+//        sourceModuleRepository.save(sm);
 
     }
 

@@ -27,8 +27,8 @@ public class FunctionalAreaServiceImpl implements FunctionalAreaService {
         FunctionalArea fa1 = new FunctionalArea("fa1",theatreManagement.get(0));
         FunctionalArea fa2 = new FunctionalArea("fa2",other.get(0));
 
-        functionalAreaRepository.save(fa1);
-        functionalAreaRepository.save(fa2);
+//        functionalAreaRepository.save(fa1);
+//        functionalAreaRepository.save(fa2);
 
     }
 }

@@ -1,7 +1,9 @@
 package com.example.demo;
 
 import com.example.demo.repository.*;
+import com.example.demo.service.SchedulerService;
 import com.example.demo.service.SourceModuleService;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +31,15 @@ public class DemoApplicationTests {
 	@Autowired
 	ModuleClassRepository moduleClassRepository;
 
+	@Autowired
+	SchedulerService schedulerService;
+
+	@Test
+	public void productAreaTest() throws Exception {
+		schedulerService.updateProductArea();
+	}
+
+//
 
 //	@Test
 //	public void showModuleClassAndFaClassDataTest(){

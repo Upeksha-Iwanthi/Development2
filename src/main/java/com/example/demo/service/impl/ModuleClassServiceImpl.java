@@ -1,22 +1,25 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.persistence.ModuleClass;
-import com.example.demo.repository.ModuleClassRepository;
 import com.example.demo.service.ModuleClassService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ModuleClassServiceImpl implements ModuleClassService {
 
-    @Autowired
-    ModuleClassRepository moduleClassRepository;
+    @Override
+    public String getModuleFromSvnURL(String svnURL){
+        int idx1 = svnURL.indexOf("/branches");
+        String module = svnURL.substring(1, idx1);
+        return module;
+    }
 
     @Override
-    public void saveData(){
-        ModuleClass moduleClass1 = new ModuleClass("module1","classPath1");
-        ModuleClass moduleClass2 = new ModuleClass("module2","classPath2");
-        moduleClassRepository.save(moduleClass1);
-        moduleClassRepository.save(moduleClass2);
+    public String getClassPathFromSvnClassPath(String svnClassPath){
+
+        int idx2 = svnClassPath.indexOf("/se/");
+        String classPath = svnClassPath.substring(idx2, svnClassPath.length()).replaceAll("/",".");
+
+        return classPath;
     }
+
 }

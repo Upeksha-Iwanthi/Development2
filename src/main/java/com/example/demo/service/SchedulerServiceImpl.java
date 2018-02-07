@@ -1,18 +1,18 @@
 package com.example.demo.service;
 
 import com.example.demo.Data.SVNData;
-import com.example.demo.persistence.SourceModuleDataService;
-import com.example.demo.persistence.SourceModule;
+import com.example.demo.persistence.*;
+import com.example.demo.repository.FunctionalAreaClassRepository;
+import com.example.demo.repository.FunctionalAreaRepository;
+import com.example.demo.repository.ModuleClassRepository;
+import com.example.demo.repository.ProductAreaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tmatesoft.svn.core.SVNException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class SchedulerServiceImpl implements SchedulerService {
@@ -21,12 +21,31 @@ public class SchedulerServiceImpl implements SchedulerService {
     private SourceModuleDataService sourceModuleDataService;
 
     @Autowired
+    private ModuleClassService moduleClassService;
+
+    @Autowired
     private SVNService svnService;
+
+    @Autowired
+    private JiraService jiraService;
+
+    @Autowired
+    private ProductAreaRepository productAreaRepository;
+
+    @Autowired
+    private FunctionalAreaRepository functionalAreaRepository;
+
+    @Autowired
+    private FunctionalAreaClassRepository functionalAreaClassRepository;
+
+    @Autowired
+    private ModuleClassRepository moduleClassRepository;
 
     private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public  void updateFunctionalArea(){
+    public  void updateProductArea() throws Exception
+    {
         /**
          *   1. Retrieve the Source Modules#
          *   2. For each entry
@@ -54,9 +73,66 @@ public class SchedulerServiceImpl implements SchedulerService {
                     branch.setRevision(01);
                 }
 
+                final List<FunctionalArea> issueFunctionalAreaList = new ArrayList<>();
+                final List<FunctionalAreaClass> issueFunctionalAreaClassList = new ArrayList<>();
+                final Map<String,ProductArea> issueProductAreaMap = new HashMap<>();
+
+                String module = moduleClassService.getModuleFromSvnURL(branch.getSvnURL());
+
                 final Set<SVNData> svnData = svnService.findModifications(branch);
 
-                for (final SVNData svnRow: svnData){
+                for (final SVNData svnRow: svnData)
+                {
+                    if (!svnRow.getClassPath().endsWith(".java"))
+                    {
+                        continue;
+                    }
+
+
+//              find product areas
+                    ProductArea productArea = issueProductAreaMap.get(svnRow.getIssueId());
+                    if(productArea == null)
+                    {
+                        productArea = jiraService.findProductAreasForIssueId(svnRow.getIssueId());
+                        issueProductAreaMap.put(svnRow.getIssueId(),productArea);
+                    }
+
+                    productAreaRepository.save(productArea);
+
+//              find functional areas
+                    for (final FunctionalArea fa : productArea.getFa())
+                    {
+                        if (!issueFunctionalAreaList.contains(fa)) {
+                            try {
+                                fa.setProductArea(productArea);
+                                issueFunctionalAreaList.add(fa);
+                                functionalAreaRepository.save(fa);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+//                      find JIRA ids
+                        FunctionalAreaClass functionalAreaClass = new FunctionalAreaClass();
+
+                        functionalAreaClass.setJiraIssueId(Long.parseLong(svnRow.getIssueId()));
+                        functionalAreaClass.setFunctionalArea(fa);
+
+                        if (!issueFunctionalAreaClassList.contains(functionalAreaClass)){
+                            issueFunctionalAreaClassList.add(functionalAreaClass);
+                            functionalAreaClassRepository.save(functionalAreaClass);
+                        }
+                    }
+
+//              find the classes modified
+                    String classPath = moduleClassService.getClassPathFromSvnClassPath(svnRow.getClassPath());
+                    ModuleClass moduleClass = new ModuleClass();
+                    moduleClass.setModule(module);
+                    moduleClass.setClassPath(classPath);
+                    moduleClass.setFunctionalAreaClasses(issueFunctionalAreaClassList);
+
+                    moduleClassRepository.save(moduleClass);
+
 
                 }
 

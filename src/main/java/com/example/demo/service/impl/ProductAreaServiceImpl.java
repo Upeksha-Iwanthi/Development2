@@ -17,7 +17,7 @@ public class ProductAreaServiceImpl implements ProductAreaService{
         ProductArea theatreManagement = new ProductArea("Theatre Management");
         ProductArea other = new ProductArea("Other");
 
-        productAreaRepository.save(theatreManagement);
-        productAreaRepository.save(other);
+//        productAreaRepository.save(theatreManagement);
+//        productAreaRepository.save(other);
     }
 }

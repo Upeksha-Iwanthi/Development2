@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Table
@@ -19,7 +20,7 @@ public class ModuleClass {
     private String classPath;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "moduleClass")
-    private Set<FunctionalAreaClass> functionalAreaClasses;
+    private List<FunctionalAreaClass> functionalAreaClasses;
 
     public ModuleClass(){
     }
@@ -54,11 +55,11 @@ public class ModuleClass {
         this.classPath = classPath;
     }
 
-    public Set<FunctionalAreaClass> getFunctionalAreaClasses() {
+    public List<FunctionalAreaClass> getFunctionalAreaClasses() {
         return functionalAreaClasses;
     }
 
-    public void setFunctionalAreaClasses(Set<FunctionalAreaClass> functionalAreaClasses) {
+    public void setFunctionalAreaClasses(List<FunctionalAreaClass> functionalAreaClasses) {
         this.functionalAreaClasses = functionalAreaClasses;
     }
 
