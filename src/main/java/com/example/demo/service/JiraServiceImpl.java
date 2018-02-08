@@ -1,10 +1,13 @@
 package com.example.demo.service;
 
 import com.atlassian.jira.rest.client.IssueRestClient;
+import com.atlassian.jira.rest.client.JiraRestClient;
 import com.atlassian.jira.rest.client.NullProgressMonitor;
+import com.atlassian.jira.rest.client.auth.BasicHttpAuthenticationHandler;
 import com.atlassian.jira.rest.client.domain.Field;
 import com.atlassian.jira.rest.client.domain.Issue;
 import com.atlassian.jira.rest.client.domain.IssueLink;
+import com.atlassian.jira.rest.client.internal.jersey.JerseyJiraRestClientFactory;
 import com.example.demo.persistence.FunctionalArea;
 import com.example.demo.persistence.ProductArea;
 import com.example.demo.service.jira.IssueLinkStrategy;
@@ -15,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +30,28 @@ public class JiraServiceImpl implements JiraService {
 
     private IssueRestClient issueClient;
 
+    JiraServiceImpl()
+    {
+        try
+        {
+            URI jiraServerURI = new URI("https://issues.cambio.se");
+            JerseyJiraRestClientFactory factory = new JerseyJiraRestClientFactory();
+            //TODO Need to provide a valid username and a password
+            JiraRestClient client = factory.create(jiraServerURI, new BasicHttpAuthenticationHandler("Jira_test", "QazWsx123"));
+            issueClient = client.getIssueClient();
+        }
+        catch (URISyntaxException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
 
     @Override
     public ProductArea findProductAreasForIssueId(String issueId) throws Exception
     {
         final List<FunctionalArea> functionalAreas = new ArrayList<>();
-        final ProductArea productArea =new ProductArea();
+        ProductArea productArea =new ProductArea();
 
         // Get the product areas of the issue
         final NullProgressMonitor progressMonitor = new NullProgressMonitor();
@@ -41,23 +62,30 @@ public class JiraServiceImpl implements JiraService {
             LOGGER.error("Can't find issue " + issueId + " " + e.getMessage());
             return productArea;
         }
-        // Get the linked issues
-        final IssueLinkStrategy strategy = new ResolvedIssueStrategy();
-        for (final IssueLink link : issue.getIssueLinks())
-        {
-            if (strategy.satisfy(link))
-            {
-                final Issue linkedIssue = issueClient.getIssue(link.getTargetIssueKey(),progressMonitor);
-                addFunctionalArea(functionalList,linkedIssue);
-            }
-        }
 
-        return getProductArea(issue,functionalAreas);
+        productArea = getProductArea(issue,functionalAreas);
+//        // Get the linked issues
+//        final IssueLinkStrategy strategy = new ResolvedIssueStrategy();
+//        for (final IssueLink link : issue.getIssueLinks())
+//        {
+//            if (strategy.satisfy(link))
+//            {
+//                final Issue linkedIssue = issueClient.getIssue(link.getTargetIssueKey(),progressMonitor);
+//                addFunctionalArea(functionalList,linkedIssue);
+//                if(!functionalAreas.contains(fa))
+//                {
+//                    functionalAreas.add(fa);
+//                }
+//            }
+//        }
+
+        return productArea;
     }
 
     private ProductArea getProductArea(final Issue issue,List<FunctionalArea> functionalAreas) throws Exception
     {
-        final Field productAreaField = issue.getFieldByName("Functional Area");
+        ProductArea productArea = new ProductArea();
+        final Field productAreaField = issue.getFieldByName("Product Area");
         if (productAreaField != null)
         {
             Object productAreaValue = productAreaField.getValue();
@@ -79,11 +107,14 @@ public class JiraServiceImpl implements JiraService {
                     area = "";
                 }
                 FunctionalArea fa = new FunctionalArea(area);
+                productArea.setName(productName);
+                fa.setProductArea(productArea);
                 if(!functionalAreas.contains(fa))
                 {
                     functionalAreas.add(fa);
                 }
-                return new ProductArea(productName,functionalAreas);
+                productArea.setFa(functionalAreas);
+                return productArea;
             } else {
                 Issue parentIssue = getParentIssue(issue);
                 if (parentIssue != null){
