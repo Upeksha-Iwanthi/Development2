@@ -18,7 +18,7 @@ public class FunctionalArea {
     @JoinColumn(name = "product_area_id")
     private ProductArea productArea;
 
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "functionalArea")
+    @OneToOne(mappedBy = "functionalArea")
     private FunctionalAreaClass functionalAreaClass;
 
     public FunctionalArea(){

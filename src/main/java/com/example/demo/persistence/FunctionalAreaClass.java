@@ -11,7 +11,7 @@ public class FunctionalAreaClass {
     @GeneratedValue
     private long id;
 
-    private long jiraIssueId;
+    private String jiraIssueId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "functionalArea_id")
@@ -25,11 +25,11 @@ public class FunctionalAreaClass {
     public FunctionalAreaClass(){
     }
 
-    public FunctionalAreaClass(long jiraIssueId){
+    public FunctionalAreaClass(String jiraIssueId){
         this.jiraIssueId = jiraIssueId;
     }
 
-    public FunctionalAreaClass(long jiraIssueId,FunctionalArea functionalArea){
+    public FunctionalAreaClass(String jiraIssueId,FunctionalArea functionalArea){
         this.jiraIssueId = jiraIssueId;
         this.moduleClass = moduleClass;
         this.functionalArea = functionalArea;
@@ -44,11 +44,11 @@ public class FunctionalAreaClass {
         this.id = id;
     }
 
-    public long getJiraIssueId() {
+    public String getJiraIssueId() {
         return jiraIssueId;
     }
 
-    public void setJiraIssueId(long jiraIssueId) {
+    public void setJiraIssueId(String jiraIssueId) {
         this.jiraIssueId = jiraIssueId;
     }
 

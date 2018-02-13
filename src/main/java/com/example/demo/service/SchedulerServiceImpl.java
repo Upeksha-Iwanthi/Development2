@@ -94,35 +94,45 @@ public class SchedulerServiceImpl implements SchedulerService {
                     if(productArea == null)
                     {
                         productArea = jiraService.findProductAreasForIssueId(svnRow.getIssueId());
-                        issueProductAreaMap.put(svnRow.getIssueId(),productArea);
+                        if(issueProductAreaMap.containsKey(svnRow.getIssueId())) {
+                            issueProductAreaMap.put(svnRow.getIssueId(), productArea);
+                        }
                     }
 
                     productAreaRepository.save(productArea);
 
 //              find functional areas
-                    for (final FunctionalArea fa : productArea.getFa())
-                    {
-                        if (!issueFunctionalAreaList.contains(fa)) {
-                            try {
-                                fa.setProductArea(productArea);
-                                issueFunctionalAreaList.add(fa);
-                                functionalAreaRepository.save(fa);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                try {
+                    List<FunctionalArea> faList = productArea.getFa();
+                        for (final FunctionalArea fa : faList) {
+
+                                if (!issueFunctionalAreaList.contains(fa)) {
+                                    try {
+                                        issueFunctionalAreaList.add(fa);
+                                        functionalAreaRepository.save(fa);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+    //                          find JIRA ids
+                                FunctionalAreaClass functionalAreaClass = new FunctionalAreaClass();
+
+                                functionalAreaClass.setJiraIssueId((svnRow.getIssueId()));
+                                functionalAreaClass.setFunctionalArea(fa);
+
+                                if (!issueFunctionalAreaClassList.contains(functionalAreaClass)) {
+                                    issueFunctionalAreaClassList.add(functionalAreaClass);
+    //                            functionalAreaClassRepository.save(functionalAreaClass);
+                                }
+
                         }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
 
-//                      find JIRA ids
-                        FunctionalAreaClass functionalAreaClass = new FunctionalAreaClass();
 
-                        functionalAreaClass.setJiraIssueId(Long.parseLong(svnRow.getIssueId()));
-                        functionalAreaClass.setFunctionalArea(fa);
 
-                        if (!issueFunctionalAreaClassList.contains(functionalAreaClass)){
-                            issueFunctionalAreaClassList.add(functionalAreaClass);
-                            functionalAreaClassRepository.save(functionalAreaClass);
-                        }
-                    }
 
 //              find the classes modified
                     String classPath = moduleClassService.getClassPathFromSvnClassPath(svnRow.getClassPath());
@@ -133,7 +143,17 @@ public class SchedulerServiceImpl implements SchedulerService {
 
                     moduleClassRepository.save(moduleClass);
 
-
+                    List<FunctionalAreaClass> faClassList = moduleClass.getFunctionalAreaClasses();
+                    for (final FunctionalAreaClass faClass : faClassList) {
+                        if (!issueFunctionalAreaClassList.contains(faClass)) {
+                            try {
+                                faClass.setModuleClass(moduleClass);
+                                functionalAreaClassRepository.save(faClass);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
 
             } catch (SVNException e) {

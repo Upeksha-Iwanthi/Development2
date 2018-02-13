@@ -12,12 +12,12 @@ import com.example.demo.persistence.FunctionalArea;
 import com.example.demo.persistence.ProductArea;
 import com.example.demo.service.jira.IssueLinkStrategy;
 import com.example.demo.service.jira.ResolvedIssueStrategy;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
-import org.json.JSONObject;
+import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -63,68 +63,90 @@ public class JiraServiceImpl implements JiraService {
             return productArea;
         }
 
-        productArea = getProductArea(issue,functionalAreas);
-//        // Get the linked issues
-//        final IssueLinkStrategy strategy = new ResolvedIssueStrategy();
-//        for (final IssueLink link : issue.getIssueLinks())
-//        {
-//            if (strategy.satisfy(link))
-//            {
-//                final Issue linkedIssue = issueClient.getIssue(link.getTargetIssueKey(),progressMonitor);
-//                addFunctionalArea(functionalList,linkedIssue);
-//                if(!functionalAreas.contains(fa))
-//                {
-//                    functionalAreas.add(fa);
-//                }
-//            }
-//        }
-
-        return productArea;
-    }
-
-    private ProductArea getProductArea(final Issue issue,List<FunctionalArea> functionalAreas) throws Exception
-    {
-        ProductArea productArea = new ProductArea();
-        final Field productAreaField = issue.getFieldByName("Product Area");
-        if (productAreaField != null)
-        {
-            Object productAreaValue = productAreaField.getValue();
-
-            if (productAreaValue != null && productAreaValue instanceof JSONObject)
+        productArea = setProductArea(issue,functionalAreas);
+        if(productArea==null){
+            // Get the linked issues
+            final IssueLinkStrategy strategy = new ResolvedIssueStrategy();
+            for (final IssueLink link : issue.getIssueLinks())
             {
-                final JSONObject productAreaJson = (JSONObject) productAreaValue;
-                String productName = productAreaJson.getString("value");
-
-                String area = null;
-                try {
-                    Object child = productAreaJson.get("child");
-                    if (child != null && child instanceof JSONObject)
-                    {
-                        JSONObject childObj = (JSONObject)child;
-                        area = childObj.getString("value");
-                    }
-                } catch (Exception e) {
-                    area = "";
-                }
-                FunctionalArea fa = new FunctionalArea(area);
-                productArea.setName(productName);
-                fa.setProductArea(productArea);
-                if(!functionalAreas.contains(fa))
+                if (strategy.satisfy(link))
                 {
-                    functionalAreas.add(fa);
-                }
-                productArea.setFa(functionalAreas);
-                return productArea;
-            } else {
-                Issue parentIssue = getParentIssue(issue);
-                if (parentIssue != null){
-                    return getProductArea(parentIssue,functionalAreas);
+                    final Issue linkedIssue = issueClient.getIssue(link.getTargetIssueKey(),progressMonitor);
+                    return setProductArea(linkedIssue,functionalAreas);
                 }
             }
         }
 
-        return null;
+        return productArea;
     }
+
+
+//    public static void main(String[] args) {
+//        try {
+//            final JiraServiceImpl obj = new JiraServiceImpl();
+//            obj.findProductAreasForIssueId("IMOD-85537");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+        private ProductArea setProductArea(final Issue issue,List<FunctionalArea> functionalAreas) throws Exception {
+            ProductArea productArea = new ProductArea();
+            final Field productAreaField = issue.getFieldByName("Product Area");
+            if (productAreaField != null)
+            {
+                Object productAreaValue = productAreaField.getValue();
+
+                if (productAreaValue != null && productAreaValue instanceof JSONObject)
+                {
+                    final JSONObject productAreaJson = (JSONObject) productAreaValue;
+                    String productName = productAreaJson.getString("value");
+
+                    String faName = setFunctionalArea(productAreaJson);
+
+                    productArea.setName(productName);
+
+                    addFunctionalArea(productArea,faName,functionalAreas);
+
+                    productArea.setFa(functionalAreas);
+
+                    return productArea;
+                } else {
+                    Issue parentIssue = getParentIssue(issue);
+                    if (parentIssue != null){
+                        return setProductArea(parentIssue,functionalAreas);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private String setFunctionalArea(final JSONObject productAreaJson) throws Exception{
+            String area = null;
+            try {
+                Object child = productAreaJson.get("child");
+
+                if (child != null && child instanceof JSONObject)
+                {
+                    JSONObject childObj = (JSONObject)child;
+                    area = childObj.getString("value");
+                }
+            } catch (Exception e) {
+                area = "";
+            }
+            return area;
+        }
+
+        private void addFunctionalArea(ProductArea productArea, String area, List<FunctionalArea> functionalAreas){
+            FunctionalArea fa = new FunctionalArea();
+            fa.setName(area);
+            fa.setProductArea(productArea);
+            if(!functionalAreas.contains(fa))
+            {
+                functionalAreas.add(fa);
+            }
+        }
 
     private Issue getParentIssue(Issue issue) throws JSONException
     {

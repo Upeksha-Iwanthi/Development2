@@ -28,7 +28,7 @@ public class FunctionalAreaClassServiceImpl implements FunctionalAreaClassServic
     public void saveData(){
         List<FunctionalArea> functionalAreas = functionalAreaRepository.findByName("fa3");
         List<ModuleClass> moduleClasses =moduleClassRepository.findByModule("module1");
-        FunctionalAreaClass functionalAreaClass1 = new FunctionalAreaClass(100,functionalAreas.get(0));
+        FunctionalAreaClass functionalAreaClass1 = new FunctionalAreaClass("100",functionalAreas.get(0));
 
         functionalAreaClass1.setModuleClass(moduleClasses.get(0));
 //        functionalAreaClassRepository.save(functionalAreaClass1);
