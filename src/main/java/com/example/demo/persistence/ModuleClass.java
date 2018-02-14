@@ -63,32 +63,32 @@ public class ModuleClass {
         this.functionalAreaClasses = functionalAreaClasses;
     }
 
-    @Override
-    public String toString(){
-        String info = "";
-        JSONObject jsonInfo = new JSONObject();
-        try {
-            jsonInfo.put("module",this.module);
-            jsonInfo.put( "classPath",this.classPath);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JSONArray faArray = new JSONArray();
-        this.functionalAreaClasses.forEach(fa->{
-            JSONObject faJson = new JSONObject();
-            try {
-                faJson.put("jiraIssueId", fa.getJiraIssueId());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            faArray.put(faJson);
-        });
-        try {
-            jsonInfo.put("functionalAreas", faArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        info = jsonInfo.toString();
-        return info;
-    }
+//    @Override
+//    public String toString(){
+//        String info = "";
+//        JSONObject jsonInfo = new JSONObject();
+//        try {
+//            jsonInfo.put("module",this.module);
+//            jsonInfo.put( "classPath",this.classPath);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        JSONArray faArray = new JSONArray();
+//        this.functionalAreaClasses.forEach(fa->{
+//            JSONObject faJson = new JSONObject();
+//            try {
+//                faJson.put("jiraIssueId", fa.getJiraIssueId());
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            faArray.put(faJson);
+//        });
+//        try {
+//            jsonInfo.put("functionalAreas", faArray);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        info = jsonInfo.toString();
+//        return info;
+//    }
 }

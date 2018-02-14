@@ -76,6 +76,7 @@ public class SchedulerServiceImpl implements SchedulerService {
                 final List<FunctionalArea> issueFunctionalAreaList = new ArrayList<>();
                 final List<FunctionalAreaClass> issueFunctionalAreaClassList = new ArrayList<>();
                 final Map<String,ProductArea> issueProductAreaMap = new HashMap<>();
+                ModuleClass moduleClass = new ModuleClass();
 
                 String module = moduleClassService.getModuleFromSvnURL(branch.getSvnURL());
 
@@ -83,77 +84,67 @@ public class SchedulerServiceImpl implements SchedulerService {
 
                 for (final SVNData svnRow: svnData)
                 {
+                    String issueId = svnRow.getIssueId();
                     if (!svnRow.getClassPath().endsWith(".java"))
                     {
                         continue;
                     }
 
 
-//              find product areas
+//                  find product areas and functional area
                     ProductArea productArea = issueProductAreaMap.get(svnRow.getIssueId());
                     if(productArea == null)
                     {
                         productArea = jiraService.findProductAreasForIssueId(svnRow.getIssueId());
-                        if(issueProductAreaMap.containsKey(svnRow.getIssueId())) {
+                        if(!issueProductAreaMap.containsKey(svnRow.getIssueId())) {
                             issueProductAreaMap.put(svnRow.getIssueId(), productArea);
                         }
                     }
-
-                    productAreaRepository.save(productArea);
-
-//              find functional areas
-                try {
+                    List<ProductArea> area = productAreaRepository.findByName(productArea.getName());
                     List<FunctionalArea> faList = productArea.getFa();
+
+                    if(area.isEmpty()) {
+                        productAreaRepository.save(productArea);
+                    }else {
                         for (final FunctionalArea fa : faList) {
 
                                 if (!issueFunctionalAreaList.contains(fa)) {
                                     try {
                                         issueFunctionalAreaList.add(fa);
-                                        functionalAreaRepository.save(fa);
+                                        fa.setProductArea(area.get(0));
+                                        List<FunctionalArea> fArea = functionalAreaRepository.findByName(fa.getName());
+                                        if(fArea.isEmpty()) {
+                                            functionalAreaRepository.save(fa);
+                                        }
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 }
-
-    //                          find JIRA ids
-                                FunctionalAreaClass functionalAreaClass = new FunctionalAreaClass();
-
-                                functionalAreaClass.setJiraIssueId((svnRow.getIssueId()));
-                                functionalAreaClass.setFunctionalArea(fa);
-
-                                if (!issueFunctionalAreaClassList.contains(functionalAreaClass)) {
-                                    issueFunctionalAreaClassList.add(functionalAreaClass);
-    //                            functionalAreaClassRepository.save(functionalAreaClass);
-                                }
-
-                        }
-                }catch (NullPointerException e){
-                    e.printStackTrace();
-                }
-
-
-
-
-//              find the classes modified
-                    String classPath = moduleClassService.getClassPathFromSvnClassPath(svnRow.getClassPath());
-                    ModuleClass moduleClass = new ModuleClass();
-                    moduleClass.setModule(module);
-                    moduleClass.setClassPath(classPath);
-                    moduleClass.setFunctionalAreaClasses(issueFunctionalAreaClassList);
-
-                    moduleClassRepository.save(moduleClass);
-
-                    List<FunctionalAreaClass> faClassList = moduleClass.getFunctionalAreaClasses();
-                    for (final FunctionalAreaClass faClass : faClassList) {
-                        if (!issueFunctionalAreaClassList.contains(faClass)) {
-                            try {
-                                faClass.setModuleClass(moduleClass);
-                                functionalAreaClassRepository.save(faClass);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
                         }
                     }
+
+//              find module classes and functional area classes
+
+                    String classPath = moduleClassService.getClassPathFromSvnClassPath(svnRow.getClassPath());
+                    moduleClass.setModule(module);
+                    moduleClass.setClassPath(classPath);
+
+                    for (final FunctionalArea fa : faList) {
+
+                        FunctionalAreaClass functionalAreaClass = new FunctionalAreaClass();
+
+                        functionalAreaClass.setJiraIssueId(issueId);
+                        functionalAreaClass.setFunctionalArea(fa);
+                        functionalAreaClass.setModuleClass(moduleClass);
+
+                        if (!issueFunctionalAreaClassList.contains(functionalAreaClass)) {
+                            issueFunctionalAreaClassList.add(functionalAreaClass);
+                        }
+                    }
+
+                    moduleClass.setFunctionalAreaClasses(issueFunctionalAreaClassList);
+                    moduleClassRepository.save(moduleClass);
+
                 }
 
             } catch (SVNException e) {
@@ -166,5 +157,6 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 
     }
+
 
 }

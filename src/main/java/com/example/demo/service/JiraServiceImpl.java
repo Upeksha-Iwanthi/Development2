@@ -84,7 +84,7 @@ public class JiraServiceImpl implements JiraService {
 //    public static void main(String[] args) {
 //        try {
 //            final JiraServiceImpl obj = new JiraServiceImpl();
-//            obj.findProductAreasForIssueId("IMOD-85537");
+//            obj.findProductAreasForIssueId("IMOD-80983");
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
@@ -92,6 +92,7 @@ public class JiraServiceImpl implements JiraService {
 
         private ProductArea setProductArea(final Issue issue,List<FunctionalArea> functionalAreas) throws Exception {
             ProductArea productArea = new ProductArea();
+
             final Field productAreaField = issue.getFieldByName("Product Area");
             if (productAreaField != null)
             {
@@ -102,7 +103,7 @@ public class JiraServiceImpl implements JiraService {
                     final JSONObject productAreaJson = (JSONObject) productAreaValue;
                     String productName = productAreaJson.getString("value");
 
-                    String faName = setFunctionalArea(productAreaJson);
+                    String faName = setFunctionalAreaName(issue);
 
                     productArea.setName(productName);
 
@@ -122,19 +123,27 @@ public class JiraServiceImpl implements JiraService {
             return null;
         }
 
-        private String setFunctionalArea(final JSONObject productAreaJson) throws Exception{
+        private String setFunctionalAreaName(final Issue issue) throws Exception{
             String area = null;
-            try {
-                Object child = productAreaJson.get("child");
+            final Field faField = issue.getFieldByName("Functional Area");
+            if (faField != null){
+                Object faValue = faField.getValue();
+                if (faValue != null && faValue instanceof  JSONObject){
+                    final JSONObject faJson = (JSONObject) faValue;
+                    try {
+                        Object child = faJson.get("child");
 
-                if (child != null && child instanceof JSONObject)
-                {
-                    JSONObject childObj = (JSONObject)child;
-                    area = childObj.getString("value");
+                        if (child != null && child instanceof JSONObject)
+                        {
+                            JSONObject childObj = (JSONObject)child;
+                            area = childObj.getString("value");
+                        }
+                    } catch (Exception e) {
+                        area = "";
+                    }
                 }
-            } catch (Exception e) {
-                area = "";
             }
+
             return area;
         }
 
@@ -142,7 +151,7 @@ public class JiraServiceImpl implements JiraService {
             FunctionalArea fa = new FunctionalArea();
             fa.setName(area);
             fa.setProductArea(productArea);
-            if(!functionalAreas.contains(fa))
+            if(!functionalAreas.contains(fa) && (fa.getName()!=null && fa.getName() != ""))
             {
                 functionalAreas.add(fa);
             }

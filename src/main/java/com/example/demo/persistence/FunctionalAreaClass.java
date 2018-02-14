@@ -31,7 +31,6 @@ public class FunctionalAreaClass {
 
     public FunctionalAreaClass(String jiraIssueId,FunctionalArea functionalArea){
         this.jiraIssueId = jiraIssueId;
-        this.moduleClass = moduleClass;
         this.functionalArea = functionalArea;
     }
 
@@ -69,44 +68,44 @@ public class FunctionalAreaClass {
     }
 
 //    @Override
-    public String toString(){
-        String info = "";
-        JSONObject jsonInfo = new JSONObject();
-        try {
-            jsonInfo.put("jiraId", this.jiraIssueId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JSONObject moduleClassObj = new JSONObject();
-        try {
-            moduleClassObj.put("module",this.moduleClass.getModule());
-            moduleClassObj.put("classPath",this.moduleClass.getClassPath());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JSONObject functionalAreaObj = new JSONObject();
-        JSONObject productAreaObj = new JSONObject();
-
-        try {
-            productAreaObj.put("name",this.functionalArea.getProductArea().getName());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            functionalAreaObj.put("name",this.functionalArea.getName());
-            functionalAreaObj.put("productArea",productAreaObj);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            jsonInfo.put("moduleClass",moduleClassObj);
-            jsonInfo.put("functionalArea",functionalAreaObj);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        info = jsonInfo.toString();
-        return info;
-    }
+//    public String toString(){
+//        String info = "";
+//        JSONObject jsonInfo = new JSONObject();
+//        try {
+//            jsonInfo.put("jiraId", this.jiraIssueId);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        JSONObject moduleClassObj = new JSONObject();
+//        try {
+//            moduleClassObj.put("module",this.moduleClass.getModule());
+//            moduleClassObj.put("classPath",this.moduleClass.getClassPath());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        JSONObject functionalAreaObj = new JSONObject();
+//        JSONObject productAreaObj = new JSONObject();
+//
+//        try {
+//            productAreaObj.put("name",this.functionalArea.getProductArea().getName());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            functionalAreaObj.put("name",this.functionalArea.getName());
+//            functionalAreaObj.put("productArea",productAreaObj);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            jsonInfo.put("moduleClass",moduleClassObj);
+//            jsonInfo.put("functionalArea",functionalAreaObj);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        info = jsonInfo.toString();
+//        return info;
+//    }
 
 
 }
