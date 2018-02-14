@@ -103,25 +103,44 @@ public class SchedulerServiceImpl implements SchedulerService {
                     List<ProductArea> area = productAreaRepository.findByName(productArea.getName());
                     List<FunctionalArea> faList = productArea.getFa();
 
-                    if(area.isEmpty()) {
-                        productAreaRepository.save(productArea);
-                    }else {
-                        for (final FunctionalArea fa : faList) {
+                    ProductArea productAreaDB = null;
+                    if(!area.isEmpty()) {
+                         productAreaDB = area.get(0);
+                         for (FunctionalArea fa : productArea.getFa())
+                         {
+                             if (productAreaDB.getFa().contains(fa))
+                             {
 
-                                if (!issueFunctionalAreaList.contains(fa)) {
-                                    try {
-                                        issueFunctionalAreaList.add(fa);
-                                        fa.setProductArea(area.get(0));
-                                        List<FunctionalArea> fArea = functionalAreaRepository.findByName(fa.getName());
-                                        if(fArea.isEmpty()) {
-                                            functionalAreaRepository.save(fa);
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                        }
+                             }else {
+                                 fa.setProductArea(productAreaDB);
+                                 productAreaDB.getFa().add(fa);
+                             }
+                         }
+                    }else
+                    {
+                        productAreaDB = productArea;
                     }
+                    productAreaRepository.save(productAreaDB);
+
+//                    if(area.isEmpty()) {
+//                        productAreaRepository.save(productArea);
+//                    }else {
+//                        for (final FunctionalArea fa : faList) {
+//
+//                                if (!issueFunctionalAreaList.contains(fa)) {
+//                                    try {
+//                                        issueFunctionalAreaList.add(fa);
+//                                        fa.setProductArea(area.get(0));
+//                                        List<FunctionalArea> fArea = functionalAreaRepository.findByName(fa.getName());
+//                                        if(fArea.isEmpty()) {
+//                                            functionalAreaRepository.save(fa);
+//                                        }
+//                                    } catch (Exception e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                        }
+//                    }
 
 //              find module classes and functional area classes
 
@@ -131,10 +150,12 @@ public class SchedulerServiceImpl implements SchedulerService {
 
                     for (final FunctionalArea fa : faList) {
 
+                        List<FunctionalArea> functionalAreasDB = functionalAreaRepository.findByName(fa.getName());
+
                         FunctionalAreaClass functionalAreaClass = new FunctionalAreaClass();
 
                         functionalAreaClass.setJiraIssueId(issueId);
-                        functionalAreaClass.setFunctionalArea(fa);
+                        functionalAreaClass.setFunctionalArea(functionalAreasDB.get(0));
                         functionalAreaClass.setModuleClass(moduleClass);
 
                         if (!issueFunctionalAreaClassList.contains(functionalAreaClass)) {

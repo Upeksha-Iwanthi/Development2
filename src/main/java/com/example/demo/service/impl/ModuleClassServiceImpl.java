@@ -9,7 +9,9 @@ public class ModuleClassServiceImpl implements ModuleClassService {
     @Override
     public String getModuleFromSvnURL(String svnURL){
         int idx1 = svnURL.indexOf("/branches");
-        String module = svnURL.substring(0, idx1);
+        String url = svnURL.substring(0, idx1);
+        String module = url.substring(url.lastIndexOf("/")+1);
+
         return module;
     }
 
