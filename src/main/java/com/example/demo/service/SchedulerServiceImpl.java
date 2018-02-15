@@ -96,19 +96,20 @@ public class SchedulerServiceImpl implements SchedulerService {
                     if(productArea == null)
                     {
                         productArea = jiraService.findProductAreasForIssueId(svnRow.getIssueId());
-                        if(!issueProductAreaMap.containsKey(svnRow.getIssueId())) {
                             issueProductAreaMap.put(svnRow.getIssueId(), productArea);
-                        }
                     }
                     List<ProductArea> area = productAreaRepository.findByName(productArea.getName());
                     List<FunctionalArea> faList = productArea.getFa();
 
                     ProductArea productAreaDB = null;
+                    List<FunctionalArea> faDBList = null;
+                    
                     if(!area.isEmpty()) {
                          productAreaDB = area.get(0);
                          for (FunctionalArea fa : productArea.getFa())
                          {
-                             if (productAreaDB.getFa().contains(fa))
+                             faDBList = functionalAreaRepository.findByName(fa.getName());
+                             if (productAreaDB.getFa().contains(fa) && !(faDBList.isEmpty()))
                              {
 
                              }else {
