@@ -96,27 +96,27 @@ public class SchedulerServiceImpl implements SchedulerService {
                     if(productArea == null)
                     {
                         productArea = jiraService.findProductAreasForIssueId(svnRow.getIssueId());
-                            issueProductAreaMap.put(svnRow.getIssueId(), productArea);
+                        issueProductAreaMap.put(svnRow.getIssueId(), productArea);
                     }
                     List<ProductArea> area = productAreaRepository.findByName(productArea.getName());
                     List<FunctionalArea> faList = productArea.getFa();
 
                     ProductArea productAreaDB = null;
                     List<FunctionalArea> faDBList = null;
-                    
-                    if(!area.isEmpty()) {
-                         productAreaDB = area.get(0);
-                         for (FunctionalArea fa : productArea.getFa())
-                         {
-                             faDBList = functionalAreaRepository.findByName(fa.getName());
-                             if (productAreaDB.getFa().contains(fa) && !(faDBList.isEmpty()))
-                             {
 
-                             }else {
-                                 fa.setProductArea(productAreaDB);
-                                 productAreaDB.getFa().add(fa);
-                             }
-                         }
+                    if(!area.isEmpty()) {
+                        productAreaDB = area.get(0);
+                        for (FunctionalArea fa : productArea.getFa())
+                        {
+                            faDBList = functionalAreaRepository.findByName(fa.getName());
+                            if (!(faDBList.isEmpty()))
+                            {
+
+                            }else {
+                                fa.setProductArea(productAreaDB);
+                                productAreaDB.getFa().add(fa);
+                            }
+                        }
                     }else
                     {
                         productAreaDB = productArea;

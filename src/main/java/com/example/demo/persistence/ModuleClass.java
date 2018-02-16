@@ -19,7 +19,7 @@ public class ModuleClass {
 
     private String classPath;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "moduleClass")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "moduleClass")
     private List<FunctionalAreaClass> functionalAreaClasses;
 
     public ModuleClass(){

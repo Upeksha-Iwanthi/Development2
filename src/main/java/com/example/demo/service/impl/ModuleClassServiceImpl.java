@@ -19,7 +19,8 @@ public class ModuleClassServiceImpl implements ModuleClassService {
     public String getClassPathFromSvnClassPath(String svnClassPath){
 
         int idx2 = svnClassPath.indexOf("/se/");
-        String classPath = svnClassPath.substring(idx2, svnClassPath.length()).replaceAll("/",".");
+        String path = svnClassPath.substring(idx2, svnClassPath.length()).replaceAll("/",".");
+        String classPath = path.substring(1,path.length());
 
         return classPath;
     }

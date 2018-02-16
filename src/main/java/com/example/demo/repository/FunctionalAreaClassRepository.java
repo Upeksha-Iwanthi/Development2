@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface FunctionalAreaClassRepository extends CrudRepository<FunctionalAreaClass,Long> {
-    List<FunctionalAreaClass> findByFunctionalAreaId(final long functionalAreaId);
+    List<FunctionalAreaClass> findByJiraIssueId(final String jiraIssueID);
 }

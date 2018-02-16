@@ -18,8 +18,8 @@ public class FunctionalArea {
     @JoinColumn(name = "product_area_id")
     private ProductArea productArea;
 
-    @OneToOne(mappedBy = "functionalArea")
-    private FunctionalAreaClass functionalAreaClass;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    private FunctionalAreaClass functionalAreaClass;
 
     public FunctionalArea(){
     }
@@ -60,13 +60,13 @@ public class FunctionalArea {
         this.productArea = productArea;
         }
 
-    public FunctionalAreaClass getFunctionalAreaClass() {
-        return functionalAreaClass;
-    }
-
-    public void setFunctionalAreaClass(FunctionalAreaClass functionalAreaClass) {
-        this.functionalAreaClass = functionalAreaClass;
-    }
+//    public FunctionalAreaClass getFunctionalAreaClass() {
+//        return functionalAreaClass;
+//    }
+//
+//    public void setFunctionalAreaClass(FunctionalAreaClass functionalAreaClass) {
+//        this.functionalAreaClass = functionalAreaClass;
+//    }
 
     public String toString(){
         String info ="";
