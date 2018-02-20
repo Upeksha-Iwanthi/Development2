@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface ModuleClassRepository extends CrudRepository<ModuleClass,Long> {
     List<ModuleClass> findByModule(final String module);
+
+    List<ModuleClass> findByModuleAndClassPath(final String module,final String classpath);
+
 }

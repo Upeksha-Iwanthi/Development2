@@ -5,12 +5,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Table
 @Entity
 public class ModuleClass {
+
     @Id
     @GeneratedValue
     private long id;
@@ -19,8 +21,8 @@ public class ModuleClass {
 
     private String classPath;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "moduleClass")
-    private List<FunctionalAreaClass> functionalAreaClasses;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "moduleClass")
+    private List<FunctionalAreaClass> functionalAreaClasses = new ArrayList<>();;
 
     public ModuleClass(){
     }
