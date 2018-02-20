@@ -73,7 +73,7 @@ public class SchedulerServiceImpl implements SchedulerService {
                     branch.setRevision(01);
                 }
 
-                final List<FunctionalArea> issueFunctionalAreaList = new ArrayList<>();
+//                final List<FunctionalArea> issueFunctionalAreaList = new ArrayList<>();
                 final List<FunctionalAreaClass> issueFunctionalAreaClassList = new ArrayList<>();
                 final Map<String,ProductArea> issueProductAreaMap = new HashMap<>();
                 ModuleClass moduleClass = new ModuleClass();
@@ -159,9 +159,8 @@ public class SchedulerServiceImpl implements SchedulerService {
                         functionalAreaClass.setFunctionalArea(functionalAreasDB.get(0));
                         functionalAreaClass.setModuleClass(moduleClass);
 
-                        if (!issueFunctionalAreaClassList.contains(functionalAreaClass)) {
-                            issueFunctionalAreaClassList.add(functionalAreaClass);
-                        }
+                        issueFunctionalAreaClassList.add(functionalAreaClass);
+
                     }
 
                     moduleClass.setFunctionalAreaClasses(issueFunctionalAreaClassList);
