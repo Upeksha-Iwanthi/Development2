@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.persistence.SourceModule;
-import com.example.demo.repository.SourceModuleRepository;
-import com.example.demo.service.SourceModuleService;
+import com.example.demo.persistence.TargetModule;
+import com.example.demo.repository.TargetModuleRepository;
+import com.example.demo.service.TargetModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +13,15 @@ import java.util.List;
 public class SourceModuleController {
 
     @Autowired
-    private SourceModuleService sourceModuleService;
+    private TargetModuleService sourceModuleService;
 
     @Autowired
-    private SourceModuleRepository sourceModuleRepository;
+    private TargetModuleRepository sourceModuleRepository;
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "api/saveData",method = RequestMethod.POST)
     public @ResponseBody
-    String saveSourceModuleData(@RequestBody final SourceModule sourceModule){
+    String saveSourceModuleData(@RequestBody final TargetModule sourceModule){
         sourceModuleRepository.save(sourceModule);
 //        sourceModuleService.saveData(sourceModule);
         return "faerfg";
@@ -31,8 +31,8 @@ public class SourceModuleController {
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "api/checkData",method = RequestMethod.GET)
     public @ResponseBody
-    SourceModule checkSourceModuleData() {
-        List<SourceModule> list = sourceModuleRepository.findBySvnURL("url_ab");
+    TargetModule checkSourceModuleData() {
+        List<TargetModule> list = sourceModuleRepository.findBySvnURL("url_ab");
         return list.get(0);
 
     }

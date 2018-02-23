@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
-public interface SourceModuleService {
+public interface TargetModuleService
+{
     void saveData();
 }

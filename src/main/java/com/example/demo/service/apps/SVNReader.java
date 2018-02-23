@@ -19,11 +19,12 @@ public class SVNReader {
 
 
 
-    public Set<SVNData> getHistory(String url, Long processedRevision) throws SVNException {
+    public Set<SVNData> getHistory(String url, Long processedRevision, final Map<String,String> propertyHolder) throws SVNException {
         Set<SVNData> totalRowSet = new HashSet<>();
 
         SVNRepository repository = mySvnRepositoryFactory.create(url);
         long latestRevision = repository.getLatestRevision();
+        propertyHolder.put("LatestRev",latestRevision+"");
 
         if (repository == null)
         {

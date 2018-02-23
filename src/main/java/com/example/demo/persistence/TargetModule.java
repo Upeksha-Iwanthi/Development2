@@ -7,7 +7,8 @@ import javax.persistence.Table;
 
 @Table
 @Entity
-public class SourceModule {
+public class TargetModule {
+
     @Id
     @GeneratedValue
     private long id;
@@ -16,9 +17,9 @@ public class SourceModule {
 
     private long revision;
 
-    public SourceModule(){}
+    public TargetModule(){}
 
-    public SourceModule(String svnURL, long revision){
+    public TargetModule(String svnURL, long revision){
         this.svnURL=svnURL;
         this.revision = revision;
     }

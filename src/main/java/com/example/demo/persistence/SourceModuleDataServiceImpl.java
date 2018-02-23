@@ -15,12 +15,11 @@ public class SourceModuleDataServiceImpl implements SourceModuleDataService {
 
     @Override
     public List<SourceModule> getConfiguredBranchList(){
-        final List<SourceModule> data = new ArrayList<SourceModule>();
+        final List<SourceModule> data = new ArrayList<>();
         for (final SourceModule obj : sourceModuleRepository.findAll())
         {
             data.add(obj);
         }
         return data;
     }
-
 }

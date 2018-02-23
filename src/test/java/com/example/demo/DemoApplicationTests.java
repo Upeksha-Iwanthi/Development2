@@ -1,9 +1,9 @@
 package com.example.demo;
 
 import com.example.demo.repository.*;
-import com.example.demo.service.SchedulerService;
+import com.example.demo.service.TargetModuleSchedulerService;
 import com.example.demo.service.SourceModuleService;
-import org.junit.Test;
+import com.example.demo.service.TargetModuleService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +20,10 @@ public class DemoApplicationTests {
 	FunctionalAreaRepository functionalAreaRepository;
 
 	@Autowired
-	SourceModuleRepository sourceModuleRepository;
+	TargetModuleRepository targetModuleRepository;
+
+	@Autowired
+	TargetModuleService targetModuleService;
 
 	@Autowired
 	SourceModuleService sourceModuleService;
@@ -32,12 +35,22 @@ public class DemoApplicationTests {
 	ModuleClassRepository moduleClassRepository;
 
 	@Autowired
-	SchedulerService schedulerService;
+	TargetModuleSchedulerService schedulerService;
 
-	@Test
-	public void productAreaTest() throws Exception {
-		schedulerService.updateProductArea();
-	}
+//	@Test
+////	public void productAreaTest() throws Exception {
+////		schedulerService.updateTablesForTargetModules();
+////	}
+
+//	@Test
+//	public void saveBranches() throws Exception{
+//		sourceModuleService.saveData();
+//	}
+
+//	@Test
+//	public void saveBranches() throws Exception{
+//		sourceModuleService.saveData();
+//	}
 
 //
 
