@@ -1,4 +1,4 @@
-package com.example.demo.service.scheduler;
+package com.example.demo.service;
 
 import com.example.demo.Data.SVNData;
 import com.example.demo.persistence.*;
@@ -9,6 +9,7 @@ import com.example.demo.repository.TargetModuleRepository;
 import com.example.demo.service.ModuleClassService;
 import com.example.demo.service.ProductAreaService;
 import com.example.demo.service.SVNService;
+import com.example.demo.service.SourceModuleSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
