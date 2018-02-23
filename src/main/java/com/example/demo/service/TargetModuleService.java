@@ -1,6 +1,6 @@
-package com.example.demo.service;
-
-public interface TargetModuleService
-{
-    void saveData();
-}
+//package com.example.demo.service;
+//
+//public interface TargetModuleService
+//{
+//    void saveData();
+//}

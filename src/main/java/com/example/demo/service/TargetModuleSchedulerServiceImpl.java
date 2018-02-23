@@ -5,7 +5,6 @@ import com.example.demo.persistence.*;
 import com.example.demo.repository.ModuleClassRepository;
 import com.example.demo.repository.ProductAreaRepository;
 import com.example.demo.repository.SourceModuleRepository;
-import com.example.demo.repository.TargetModuleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,10 @@ import java.util.*;
 public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerService {
 
     @Autowired
-    private TargetModuleDataService targetModuleDataService;
+    private SourceModuleDataService sourceModuleDataService;
 
     @Autowired
-    private TargetModuleRepository targetModuleRepository;
+    private SourceModuleRepository sourceModuleRepository;
 
     @Autowired
     private ModuleClassService moduleClassService;
@@ -56,7 +55,7 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
     public  void updateTablesForTargetModules() throws Exception
     {
 //      Retrieve the source modules
-        List<TargetModule> branchList = targetModuleDataService.getConfiguredBranchList();
+        List<SourceModule> branchList = sourceModuleDataService.getConfiguredBranchList("Int");
 
         if (branchList.isEmpty())
         {
@@ -64,7 +63,7 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
             return;
         }
 
-        for(TargetModule branch: branchList){
+        for(SourceModule branch: branchList){
 //          if revision of branch(source module) is zero, set it to 1.
             try {
                 if (branch.getRevision() == 0) {
@@ -78,11 +77,11 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
                 String module = moduleClassService.getModuleFromSvnURL(branch.getSvnURL());
 
               //find the modifications for the branch
-                final Set<SVNData> svnData = svnService.findModificationsForTargetModules(branch,propertyHolder);
+                final Set<SVNData> svnData = svnService.findModificationsForSourceModules(branch,propertyHolder);
                 findDataForModifications(svnData,module,issueProductAreaMap);
 
                 branch.setRevision(Long.parseLong(propertyHolder.get("LatestRev")));
-                targetModuleRepository.save(branch);
+                sourceModuleRepository.save(branch);
                 LOGGER.info(" Finished Processing branch " + branch.getSvnURL());
 
             } catch (SVNException e) {

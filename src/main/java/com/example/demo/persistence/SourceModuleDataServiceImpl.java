@@ -14,9 +14,9 @@ public class SourceModuleDataServiceImpl implements SourceModuleDataService {
     SourceModuleRepository sourceModuleRepository;
 
     @Override
-    public List<SourceModule> getConfiguredBranchList(){
+    public List<SourceModule> getConfiguredBranchList(String type){
         final List<SourceModule> data = new ArrayList<>();
-        for (final SourceModule obj : sourceModuleRepository.findAll())
+        for (final SourceModule obj : sourceModuleRepository.findByType(type))
         {
             data.add(obj);
         }

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface SourceModuleRepository extends CrudRepository<SourceModule,Long> {
-    List<SourceModule> findBySvnURL(final String userName);
+    List<SourceModule> findByType(final String type);
 }

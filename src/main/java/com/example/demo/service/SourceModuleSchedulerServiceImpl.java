@@ -3,13 +3,7 @@ package com.example.demo.service;
 import com.example.demo.Data.SVNData;
 import com.example.demo.persistence.*;
 import com.example.demo.repository.ModuleClassRepository;
-import com.example.demo.repository.ProductAreaRepository;
 import com.example.demo.repository.SourceModuleRepository;
-import com.example.demo.repository.TargetModuleRepository;
-import com.example.demo.service.ModuleClassService;
-import com.example.demo.service.ProductAreaService;
-import com.example.demo.service.SVNService;
-import com.example.demo.service.SourceModuleSchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +19,6 @@ import java.util.Set;
 public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerService {
 
     @Autowired
-    private TargetModuleDataService targetModuleDataService;
-
-    @Autowired
-    private TargetModuleRepository targetModuleRepository;
-
-    @Autowired
     private SourceModuleDataService sourceModuleDataService;
 
     @Autowired
@@ -40,13 +28,7 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
     private ModuleClassService moduleClassService;
 
     @Autowired
-    private ProductAreaService productAreaService;
-
-    @Autowired
     private SVNService svnService;
-
-    @Autowired
-    private ProductAreaRepository productAreaRepository;
 
     @Autowired
     private ModuleClassRepository moduleClassRepository;
@@ -56,7 +38,7 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
     @Override
     public void updateTablesForSourceModules() throws Exception {
         //      Retrieve the source modules
-        List<SourceModule> branchList = sourceModuleDataService.getConfiguredBranchList();
+        List<SourceModule> branchList = sourceModuleDataService.getConfiguredBranchList("Dev");
 
         if (branchList.isEmpty())
         {

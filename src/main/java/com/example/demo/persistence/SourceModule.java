@@ -16,6 +16,8 @@ public class SourceModule {
 
     private long revision;
 
+    private String type;
+
     public SourceModule(){}
 
     public SourceModule(String svnURL, long revision){
@@ -45,5 +47,13 @@ public class SourceModule {
 
     public void setRevision(long revision) {
         this.revision = revision;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
