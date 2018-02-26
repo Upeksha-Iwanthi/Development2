@@ -32,10 +32,13 @@ public class DemoApplicationTests {
 	@Autowired
 	SourceModuleSchedulerService sourceModuleSchedulerService;
 
-	@Test
-	public void productAreaTest() throws Exception {
-		sourceModuleSchedulerService.updateTablesForSourceModules();
-	}
+	@Autowired
+	TargetModuleSchedulerService targetModuleSchedulerService;
+
+//	@Test
+//	public void productAreaTest() throws Exception {
+//		targetModuleSchedulerService.updateTablesForTargetModules();
+//	}
 
 //	@Test
 //	public void saveBranches() throws Exception{
