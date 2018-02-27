@@ -92,7 +92,6 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
 
 
     private void findDataForModifications(Set<SVNData> svnData, String module, Map<String,ProductArea> issueProductAreaMap) throws Exception {
-        String exceptionPoint = "";
         for (final SVNData svnRow: svnData)
         {
             try {
@@ -105,7 +104,9 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
 
                 //find product areas and functional area
                 ProductArea productArea = productAreaService.findProductAreaForIssueId(svnRow.getIssueId(), issueProductAreaMap);
-                exceptionPoint = productArea.getName();
+                if (productArea==null){
+                    continue;
+                }
 
                 //check the DB
                 List<ProductArea> area = productAreaRepository.findByName(productArea.getName());
@@ -133,7 +134,7 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
                 //save module class with it's functional area classes
                 moduleClassRepository.save(moduleClass);
             }catch (NullPointerException ne){
-                LOGGER.error(ne.getMessage());
+                LOGGER.error("Cannot find product area for "+svnRow.getIssueId());
             }
         }
     }
