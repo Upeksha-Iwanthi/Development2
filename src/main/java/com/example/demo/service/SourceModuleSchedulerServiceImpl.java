@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.Data.SVNData;
 import com.example.demo.persistence.*;
 import com.example.demo.repository.ModuleClassRepository;
-import com.example.demo.repository.SourceModuleRepository;
+import com.example.demo.repository.ModulesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import java.util.Set;
 public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerService {
 
     @Autowired
-    private SourceModuleDataService sourceModuleDataService;
+    private ModulesDataService modulesDataService;
 
     @Autowired
-    private SourceModuleRepository sourceModuleRepository;
+    private ModulesRepository modulesRepository;
 
     @Autowired
     private ModuleClassService moduleClassService;
@@ -38,7 +38,7 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
     @Override
     public void updateTablesForSourceModules() throws Exception {
         //      Retrieve the source modules
-        List<SourceModule> branchList = sourceModuleDataService.getConfiguredBranchList("Dev");
+        List<Modules> branchList = modulesDataService.getConfiguredBranchList("Dev");
 
         if (branchList.isEmpty())
         {
@@ -46,7 +46,7 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
             return;
         }
 
-        for(SourceModule branch: branchList){
+        for(Modules branch: branchList){
 //          if revision of branch(source module) is zero, set it to 1.
             try {
                 if (branch.getRevision() == 0) {
@@ -62,7 +62,7 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
                 findDataForModifications(svnData,module);
 
                 branch.setRevision(Long.parseLong(propertyHolder.get("LatestRev")));
-                sourceModuleRepository.save(branch);
+                modulesRepository.save(branch);
                 LOGGER.info(" Finished Processing branch " + branch.getSvnURL());
 
             } catch (SVNException e) {

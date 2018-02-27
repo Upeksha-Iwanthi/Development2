@@ -3,8 +3,7 @@ package com.example.demo;
 import com.example.demo.repository.*;
 import com.example.demo.service.SourceModuleSchedulerService;
 import com.example.demo.service.TargetModuleSchedulerService;
-import com.example.demo.service.SourceModuleService;
-import org.junit.Test;
+import com.example.demo.service.ModulesService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +20,7 @@ public class DemoApplicationTests {
 	FunctionalAreaRepository functionalAreaRepository;
 
 	@Autowired
-	SourceModuleService sourceModuleService;
+    ModulesService sourceModuleService;
 
 	@Autowired
 	FunctionalAreaClassRepository functionalAreaClassRepository;

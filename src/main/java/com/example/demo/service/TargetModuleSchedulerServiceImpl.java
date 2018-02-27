@@ -4,7 +4,7 @@ import com.example.demo.Data.SVNData;
 import com.example.demo.persistence.*;
 import com.example.demo.repository.ModuleClassRepository;
 import com.example.demo.repository.ProductAreaRepository;
-import com.example.demo.repository.SourceModuleRepository;
+import com.example.demo.repository.ModulesRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,10 @@ import java.util.*;
 public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerService {
 
     @Autowired
-    private SourceModuleDataService sourceModuleDataService;
+    private ModulesDataService modulesDataService;
 
     @Autowired
-    private SourceModuleRepository sourceModuleRepository;
+    private ModulesRepository sourceModuleRepository;
 
     @Autowired
     private ModuleClassService moduleClassService;
@@ -55,7 +55,7 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
     public  void updateTablesForTargetModules() throws Exception
     {
 //      Retrieve the source modules
-        List<SourceModule> branchList = sourceModuleDataService.getConfiguredBranchList("Int");
+        List<Modules> branchList = modulesDataService.getConfiguredBranchList("Int");
 
         if (branchList.isEmpty())
         {
@@ -63,7 +63,7 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
             return;
         }
 
-        for(SourceModule branch: branchList){
+        for(Modules branch: branchList){
 //          if revision of branch(source module) is zero, set it to 1.
             try {
                 if (branch.getRevision() == 0) {
@@ -95,7 +95,6 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
         for (final SVNData svnRow: svnData)
         {
             try {
-
                 //avoid svnData with classPath that does not ends with ".java"
                 String issueId = svnRow.getIssueId();
                 if (!svnRow.getClassPath().endsWith(".java")) {
