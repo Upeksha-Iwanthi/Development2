@@ -38,7 +38,7 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
     @Override
     public void updateTablesForSourceModules() throws Exception {
         //      Retrieve the source modules
-        List<Modules> branchList = modulesDataService.getConfiguredBranchList("Dev");
+        List<Modules> branchList = modulesDataService.getConfiguredBranchList("Source");
 
         if (branchList.isEmpty())
         {
@@ -62,6 +62,8 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
                 findDataForModifications(svnData,module);
 
                 branch.setRevision(Long.parseLong(propertyHolder.get("LatestRev")));
+                List<IssueId> issueList = modulesDataService.getIssueList(branch);
+                branch.setIssueList(issueList);
                 modulesRepository.save(branch);
                 LOGGER.info(" Finished Processing branch " + branch.getSvnURL());
 

@@ -8,6 +8,7 @@ import com.atlassian.jira.rest.client.domain.Field;
 import com.atlassian.jira.rest.client.domain.Issue;
 import com.atlassian.jira.rest.client.domain.IssueLink;
 import com.atlassian.jira.rest.client.internal.jersey.JerseyJiraRestClientFactory;
+import com.example.demo.Data.IssueIdFilter;
 import com.example.demo.persistence.FunctionalArea;
 import com.example.demo.persistence.ProductArea;
 import com.example.demo.service.jira.IssueLinkStrategy;

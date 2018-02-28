@@ -20,7 +20,7 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
     private ModulesDataService modulesDataService;
 
     @Autowired
-    private ModulesRepository sourceModuleRepository;
+    private ModulesRepository modulesRepository;
 
     @Autowired
     private ModuleClassService moduleClassService;
@@ -55,7 +55,7 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
     public  void updateTablesForTargetModules() throws Exception
     {
 //      Retrieve the source modules
-        List<Modules> branchList = modulesDataService.getConfiguredBranchList("Int");
+        List<Modules> branchList = modulesDataService.getConfiguredBranchList("Target");
 
         if (branchList.isEmpty())
         {
@@ -81,7 +81,7 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
                 findDataForModifications(svnData,module,issueProductAreaMap);
 
                 branch.setRevision(Long.parseLong(propertyHolder.get("LatestRev")));
-                sourceModuleRepository.save(branch);
+                modulesRepository.save(branch);
                 LOGGER.info(" Finished Processing branch " + branch.getSvnURL());
 
             } catch (SVNException e) {
@@ -89,6 +89,8 @@ public class TargetModuleSchedulerServiceImpl implements TargetModuleSchedulerSe
             }
         }
     }
+
+
 
 
     private void findDataForModifications(Set<SVNData> svnData, String module, Map<String,ProductArea> issueProductAreaMap) throws Exception {

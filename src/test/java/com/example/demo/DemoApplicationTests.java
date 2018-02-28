@@ -4,6 +4,7 @@ import com.example.demo.repository.*;
 import com.example.demo.service.SourceModuleSchedulerService;
 import com.example.demo.service.TargetModuleSchedulerService;
 import com.example.demo.service.ModulesService;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,10 +35,10 @@ public class DemoApplicationTests {
 	@Autowired
 	TargetModuleSchedulerService targetModuleSchedulerService;
 
-//	@Test
-//	public void productAreaTest() throws Exception {
-//		targetModuleSchedulerService.updateTablesForTargetModules();
-//	}
+	@Test
+	public void productAreaTest() throws Exception {
+		sourceModuleSchedulerService.updateTablesForSourceModules();
+	}
 
 //	@Test
 //	public void saveBranches() throws Exception{
