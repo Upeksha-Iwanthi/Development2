@@ -8,6 +8,7 @@ public class IssueSearchResult {
     private String classPath;
     private String module;
     private String functionalArea;
+    private double percentage;
     private List<String> jiraIssueIds;
 
     public String getClassPath() {
@@ -32,6 +33,14 @@ public class IssueSearchResult {
 
     public void setFunctionalArea(String functionalArea) {
         this.functionalArea = functionalArea;
+    }
+
+    public double getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(double percentage) {
+        this.percentage = percentage;
     }
 
     public List<String> getJiraIssueIds() {

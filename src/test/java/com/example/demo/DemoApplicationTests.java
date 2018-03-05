@@ -45,9 +45,9 @@ public class DemoApplicationTests {
 
 	@Test
 	public void testFunctionalAreaFinder() throws Exception{
-        List<IssueSearchResult> list = functionalAreaFinderService.findFunctionalAreas("IMOD-65824");
+        List<IssueSearchResult> list = functionalAreaFinderService.findFunctionalAreas("IMOD-67377");
         for(IssueSearchResult result:list) {
-            System.out.println(result.getClassPath()+"\n "+result.getModule()+"\n "+result.getFunctionalAreas());
+            System.out.println(result.getClassPath()+"\n"+result.getModule()+"\n"+result.getFunctionalAreas());
             for(String ids:result.getJiraIssueIds()) {
 				System.out.println(ids);
 			}

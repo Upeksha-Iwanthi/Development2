@@ -1,10 +1,12 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.Data.IssueSearchResult;
+import com.example.demo.persistence.FunctionalArea;
 import com.example.demo.persistence.FunctionalAreaClass;
 import com.example.demo.persistence.IssueId;
 import com.example.demo.repository.FunctionalAreaClassRepository;
 import com.example.demo.repository.FunctionalAreaRepository;
+import com.example.demo.repository.IssueIdRepository;
 import com.example.demo.repository.ProductAreaRepository;
 import com.example.demo.service.FunctionalAreaFinderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,13 @@ import java.util.List;
 public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderService {
 
     @Autowired
-    FunctionalAreaClassRepository functionalAreaClassRepository;
+    IssueIdRepository issueIdRepository;
 
     @Autowired
     ProductAreaRepository productAreaRepository;
+
+    @Autowired
+    FunctionalAreaClassRepository functionalAreaClassRepository;
 
     @Override
     public List<IssueSearchResult> findFunctionalAreas(String jiraIssueId){
@@ -29,16 +34,18 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
         {
             try {
                 String jiraId = jiraIssueId.replaceAll(" ","").toUpperCase();
-                final List<FunctionalAreaClass> list = functionalAreaClassRepository.findByJiraIssueId(jiraId);
-                for (FunctionalAreaClass faClass : list)
+                final List<IssueId> list = issueIdRepository.findByIssueId(jiraId);
+                for (IssueId issueId : list)
                 {
-                    IssueSearchResult result = new IssueSearchResult();
-                    result.setFunctionalArea(faClass.getFunctionalArea().getName());
-                    result.setClassPath(faClass.getModuleClass().getClassPath());
-                    result.setModule(faClass.getModuleClass().getModule());
-                    result.setJiraIssueIds(getIssueList(faClass));
+                    for (FunctionalAreaClass faClass:issueId.getModules().getFunctionalAreaClasses()) {
+                        IssueSearchResult result = new IssueSearchResult();
+                        result.setClassPath(issueId.getModules().getClassPath());
+                        result.setModule(issueId.getModules().getModule());
+                        result.setFunctionalArea(faClass.getFunctionalArea().getName());
+                        result.setJiraIssueIds(getIssueList(faClass.getFunctionalArea()));
 
-                    resultList.add(result);
+                        resultList.add(result);
+                    }
                 }
                 return resultList;
             }catch (Exception e){
@@ -47,11 +54,11 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
         }
         return resultList;
     }
-    private List<String> getIssueList(FunctionalAreaClass faClass){
-        List<IssueId> issueList = faClass.getModuleClass().getIssueList();
+    private List<String> getIssueList(FunctionalArea functionalArea){
+        List<FunctionalAreaClass> faClassList = functionalAreaClassRepository.findByFunctionalArea(functionalArea);
         List<String> issueIdList = new ArrayList<>();
-        for (IssueId id : issueList){
-            issueIdList.add(id.getIssueId());
+        for (FunctionalAreaClass faClass : faClassList){
+            issueIdList.add(faClass.getJiraIssueId());
         }
         return issueIdList;
     }
