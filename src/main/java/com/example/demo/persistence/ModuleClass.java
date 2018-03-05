@@ -1,5 +1,7 @@
 package com.example.demo.persistence;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +24,11 @@ public class ModuleClass {
     private String classPath;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "moduleClass")
-    private List<FunctionalAreaClass> functionalAreaClasses = new ArrayList<>();;
+    private List<FunctionalAreaClass> functionalAreaClasses = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "moduleClass")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<IssueId> issueList = new ArrayList<>();
 
     public ModuleClass(){
     }
@@ -63,6 +69,14 @@ public class ModuleClass {
 
     public void setFunctionalAreaClasses(List<FunctionalAreaClass> functionalAreaClasses) {
         this.functionalAreaClasses = functionalAreaClasses;
+    }
+
+    public List<IssueId> getIssueList() {
+        return issueList;
+    }
+
+    public void setIssueList(List<IssueId> issueList) {
+        this.issueList = issueList;
     }
 
 //    @Override

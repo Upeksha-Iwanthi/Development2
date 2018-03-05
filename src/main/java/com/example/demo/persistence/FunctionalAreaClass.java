@@ -13,11 +13,11 @@ public class FunctionalAreaClass {
 
     private String jiraIssueId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "module_class_id")
     private ModuleClass moduleClass;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "functionalArea_id")
     private FunctionalArea functionalArea;
 

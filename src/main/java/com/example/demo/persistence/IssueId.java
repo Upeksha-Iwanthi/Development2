@@ -11,9 +11,9 @@ public class IssueId {
 
     private String issueId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "module_id")
-    private Modules modules;
+    @ManyToOne
+    @JoinColumn(name = "module_class_id")
+    private ModuleClass moduleClass;
 
     public IssueId(){
     }
@@ -38,11 +38,11 @@ public class IssueId {
         this.issueId = issueId;
     }
 
-    public Modules getModules() {
-        return modules;
+    public ModuleClass getModules() {
+        return moduleClass;
     }
 
-    public void setModules(Modules modules) {
-        this.modules = modules;
+    public void setModules(ModuleClass moduleClass) {
+        this.moduleClass = moduleClass;
     }
 }

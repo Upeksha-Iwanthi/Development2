@@ -7,7 +7,7 @@ import java.util.List;
 public class IssueSearchResult {
     private String classPath;
     private String module;
-    private List<FunctionalArea> functionalAreas;
+    private String functionalArea;
     private List<String> jiraIssueIds;
 
     public String getClassPath() {
@@ -26,12 +26,12 @@ public class IssueSearchResult {
         this.module = module;
     }
 
-    public List<FunctionalArea> getFunctionalAreas() {
-        return functionalAreas;
+    public String getFunctionalAreas() {
+        return functionalArea;
     }
 
-    public void setFunctionalAreas(List<FunctionalArea> functionalAreas) {
-        this.functionalAreas = functionalAreas;
+    public void setFunctionalArea(String functionalArea) {
+        this.functionalArea = functionalArea;
     }
 
     public List<String> getJiraIssueIds() {

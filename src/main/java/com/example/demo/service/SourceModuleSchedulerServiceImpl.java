@@ -4,16 +4,14 @@ import com.example.demo.Data.SVNData;
 import com.example.demo.persistence.*;
 import com.example.demo.repository.ModuleClassRepository;
 import com.example.demo.repository.ModulesRepository;
+import org.hibernate.LazyInitializationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tmatesoft.svn.core.SVNException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerService {
@@ -59,11 +57,9 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
 
                 //find the modifications for the branch
                 final Set<SVNData> svnData = svnService.findModificationsForSourceModules(branch,propertyHolder);
-                findDataForModifications(svnData,module);
+                setModuleClassData(svnData,module);
 
                 branch.setRevision(Long.parseLong(propertyHolder.get("LatestRev")));
-                List<IssueId> issueList = modulesDataService.getIssueList(branch);
-                branch.setIssueList(issueList);
                 modulesRepository.save(branch);
                 LOGGER.info(" Finished Processing branch " + branch.getSvnURL());
 
@@ -73,21 +69,35 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
         }
     }
 
-    private void findDataForModifications(Set<SVNData> svnData, String module) throws Exception {
+    private void setModuleClassData(Set<SVNData> svnData, String module) throws Exception {
         String exceptionPoint = "";
         for (final SVNData svnRow: svnData)
         {
             try {
+                //avoid svnData with classPath that does not ends with ".java"
+                String issueId = svnRow.getIssueId();
+                if (!svnRow.getClassPath().endsWith(".java")) {
+                    continue;
+                }
                 //get the classpath from svn class path.
                 String classPath = moduleClassService.getClassPathFromSvnClassPath(svnRow.getClassPath());
 
                 //get module class
                 final ModuleClass moduleClass = moduleClassService.getModuleClass(module, classPath);
 
-                //save module class with it's functional area classes
+                //set modified jira issue ids.
+                List<IssueId> issueList = moduleClass.getIssueList();
+                IssueId issue_Id = new IssueId(svnRow.getIssueId());
+                issue_Id.setModules(moduleClass);
+                issueList.add(issue_Id);
+
+
+                //save module class
                 moduleClassRepository.save(moduleClass);
             }catch (NullPointerException ne){
                 LOGGER.error(ne.getMessage());
+            }catch (LazyInitializationException le){
+                LOGGER.error(le.getMessage());
             }
         }
     }

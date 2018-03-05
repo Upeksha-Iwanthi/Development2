@@ -67,7 +67,7 @@ public class ModuleClassServiceImpl implements ModuleClassService {
             functionalAreaClass.setFunctionalArea(functionalAreasDB.get(0));
             functionalAreaClass.setModuleClass(moduleClass);
 
-            List<FunctionalAreaClass> functionalAreaClassesDB = functionalAreaClassRepository.findByJiraIssueIdAndFunctionaArea(issueId,functionalAreasDB.get(0));
+            List<FunctionalAreaClass> functionalAreaClassesDB = functionalAreaClassRepository.findByJiraIssueIdAndFunctionalArea(issueId,functionalAreasDB.get(0));
             if(!functionalAreaClassesDB.isEmpty()){
 
             }else{

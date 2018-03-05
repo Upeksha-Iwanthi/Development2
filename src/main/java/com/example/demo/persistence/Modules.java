@@ -17,9 +17,6 @@ public class Modules {
 
     private String type;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modules")
-    private List<IssueId> issueList = new ArrayList<>();
-
     public Modules(){}
 
     public Modules(String svnURL, long revision){
@@ -59,11 +56,4 @@ public class Modules {
         this.type = type;
     }
 
-    public List<IssueId> getIssueList() {
-        return issueList;
-    }
-
-    public void setIssueList(List<IssueId> issueList) {
-        this.issueList = issueList;
-    }
 }

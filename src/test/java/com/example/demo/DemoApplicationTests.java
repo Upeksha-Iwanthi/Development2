@@ -1,6 +1,9 @@
 package com.example.demo;
 
+import com.example.demo.Data.IssueSearchResult;
+import com.example.demo.controller.FunctionalAreaController;
 import com.example.demo.repository.*;
+import com.example.demo.service.FunctionalAreaFinderService;
 import com.example.demo.service.SourceModuleSchedulerService;
 import com.example.demo.service.TargetModuleSchedulerService;
 import com.example.demo.service.ModulesService;
@@ -9,6 +12,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,10 +40,24 @@ public class DemoApplicationTests {
 	@Autowired
 	TargetModuleSchedulerService targetModuleSchedulerService;
 
+	@Autowired
+    FunctionalAreaFinderService functionalAreaFinderService;
+
 	@Test
-	public void productAreaTest() throws Exception {
-		sourceModuleSchedulerService.updateTablesForSourceModules();
+	public void testFunctionalAreaFinder() throws Exception{
+        List<IssueSearchResult> list = functionalAreaFinderService.findFunctionalAreas("IMOD-65824");
+        for(IssueSearchResult result:list) {
+            System.out.println(result.getClassPath()+"\n "+result.getModule()+"\n "+result.getFunctionalAreas());
+            for(String ids:result.getJiraIssueIds()) {
+				System.out.println(ids);
+			}
+        }
 	}
+
+//	@Test
+//	public void productAreaTest() throws Exception {
+//		sourceModuleSchedulerService.updateTablesForSourceModules();
+//	}
 
 //	@Test
 //	public void saveBranches() throws Exception{
