@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.Data.SVNData;
 import com.example.demo.persistence.*;
+import com.example.demo.repository.IssueIdRepository;
 import com.example.demo.repository.ModuleClassRepository;
 import com.example.demo.repository.ModulesRepository;
 import org.hibernate.LazyInitializationException;
@@ -30,6 +31,9 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
 
     @Autowired
     private ModuleClassRepository moduleClassRepository;
+
+    @Autowired
+    private IssueIdRepository issueIdRepository;
 
     private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -89,8 +93,12 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
                 List<IssueId> issueList = moduleClass.getIssueList();
                 IssueId issue_Id = new IssueId(svnRow.getIssueId());
                 issue_Id.setModules(moduleClass);
-                issueList.add(issue_Id);
-
+                ModuleClass moduleClassDb = moduleClassRepository.findByClassPath(moduleClass.getClassPath());
+                List<IssueId> issueIdDB = issueIdRepository.findByIssueIdAndModuleClass(svnRow.getIssueId(),moduleClassDb);
+                if (issueIdDB.isEmpty()) {
+                    issueList.add(issue_Id);
+                }
+//                issueList.add(issue_Id);
 
                 //save module class
                 moduleClassRepository.save(moduleClass);

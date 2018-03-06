@@ -5,5 +5,6 @@ import com.example.demo.Data.IssueSearchResult;
 import java.util.List;
 
 public interface FunctionalAreaFinderService {
-    List<IssueSearchResult> findFunctionalAreas(String jiraIssueid);
+    List<IssueSearchResult> findFunctionalAreasForIssueId(String jiraIssueid);
+    List<IssueSearchResult> findFunctionalAreasByClass(String classPath);
 }

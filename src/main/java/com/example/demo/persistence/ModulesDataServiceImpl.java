@@ -32,26 +32,5 @@ public class ModulesDataServiceImpl implements ModulesDataService {
         return data;
     }
 
-    @Override
-    public List<IssueId> getIssueList(Modules devBranch){
-        List<String> issueStringList = null;
-        List<IssueId> issueIdList = null;
-        try {
-            final SVNRepository repository = mySVNRepositoryFactory.create(devBranch.getSvnURL());
-            Collection<SVNLogEntry> logEntries =
-                    repository.log(new String[]{},null,devBranch.getRevision(),repository.getLatestRevision(),true,true);
-            for (SVNLogEntry svnLogEntry : logEntries) {
-                issueStringList = IssueIdFilter.getValidIssueIds(svnLogEntry.getMessage());
-                for (String issueId : issueStringList){
-                    IssueId issue_id = new IssueId(issueId);
-                    issueIdList.add(issue_id);
-                }
-            }
-        } catch (SVNException e) {
-            e.printStackTrace();
-        }
-
-        return issueIdList;
-    }
 
 }
