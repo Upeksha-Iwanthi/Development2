@@ -1,12 +1,8 @@
 package com.example.demo;
 
 import com.example.demo.Data.IssueSearchResult;
-import com.example.demo.controller.FunctionalAreaController;
 import com.example.demo.repository.*;
-import com.example.demo.service.FunctionalAreaFinderService;
-import com.example.demo.service.SourceModuleSchedulerService;
-import com.example.demo.service.TargetModuleSchedulerService;
-import com.example.demo.service.ModulesService;
+import com.example.demo.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +39,29 @@ public class DemoApplicationTests {
 	@Autowired
     FunctionalAreaFinderService functionalAreaFinderService;
 
+	@Autowired
+	FindFunctionalAreaByClassService findFunctionalAreaByClassService;
+
+//	@Test
+////	public void testFunctionalAreaFinder() throws Exception{
+////        List<IssueSearchResult> list = functionalAreaFinderService.findFunctionalAreasForIssueId("IMOD-86354");
+////        for(IssueSearchResult result:list) {
+////            System.out.println(result.getClassPath()+"\n"+result.getModule()+"\n"+result.getFunctionalAreas()+"\n"+result.getPercentage());
+////            for(String ids:result.getJiraIssueIds()) {
+////				System.out.println(ids);
+////			}
+////        }
+////	}
+
 	@Test
-	public void testFunctionalAreaFinder() throws Exception{
-        List<IssueSearchResult> list = functionalAreaFinderService.findFunctionalAreasForIssueId("IMOD-86354");
-        for(IssueSearchResult result:list) {
-            System.out.println(result.getClassPath()+"\n"+result.getModule()+"\n"+result.getFunctionalAreas()+"\n"+result.getPercentage());
-            for(String ids:result.getJiraIssueIds()) {
+	public void testFindFAByClass(){
+		List<IssueSearchResult> list = findFunctionalAreaByClassService.findFunctionalAreasByClass("se.cambio.cosmic.eped.impl.ServiceConfiguration");
+		for(IssueSearchResult result:list) {
+			System.out.println(result.getClassPath()+"\n"+result.getModule()+"\n"+result.getFunctionalAreas()+"\n"+result.getProductArea()+"\n"+result.getPercentage());
+			for(String ids:result.getJiraIssueIds()) {
 				System.out.println(ids);
 			}
-        }
+		}
 	}
 
 //	@Test

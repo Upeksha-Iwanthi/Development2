@@ -8,6 +8,7 @@ public class IssueSearchResult {
     private String classPath;
     private String module;
     private String functionalArea;
+    private String productArea;
     private double percentage;
     private List<String> jiraIssueIds;
 
@@ -49,5 +50,13 @@ public class IssueSearchResult {
 
     public void setJiraIssueIds(List<String> jiraIssueIds) {
         this.jiraIssueIds = jiraIssueIds;
+    }
+
+    public String getProductArea() {
+        return productArea;
+    }
+
+    public void setProductArea(String productArea) {
+        this.productArea = productArea;
     }
 }

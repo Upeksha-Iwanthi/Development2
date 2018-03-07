@@ -98,8 +98,7 @@ public class SourceModuleSchedulerServiceImpl implements SourceModuleSchedulerSe
                 if (issueIdDB.isEmpty()) {
                     issueList.add(issue_Id);
                 }
-//                issueList.add(issue_Id);
-
+                
                 //save module class
                 moduleClassRepository.save(moduleClass);
             }catch (NullPointerException ne){
