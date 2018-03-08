@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -29,40 +30,61 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
     @Autowired
     ModuleClassRepository moduleClassRepository;
 
-    @Override
-    public List<IssueSearchResult> findFunctionalAreasForIssueId(String jiraIssueId){
-        List<IssueSearchResult> resultList = new ArrayList<>();
-        if (jiraIssueId != null && jiraIssueId.length()> 0)
-        {
-            try {
-                String jiraId = jiraIssueId.replaceAll(" ","").toUpperCase();
-                final List<IssueId> list = issueIdRepository.findByIssueId(jiraId);
-                for (IssueId issueId : list)
-                {
-                    List<FunctionalAreaClass> functionalAreaClassList = issueId.getModules().getFunctionalAreaClasses();
-                    for (FunctionalAreaClass faClass:functionalAreaClassList)
-                    {
-                        IssueSearchResult result = new IssueSearchResult();
-                        result.setClassPath(issueId.getModules().getClassPath());
-                        result.setModule(issueId.getModules().getModule());
-                        result.setFunctionalArea(faClass.getFunctionalArea().getName());
-                        result.setProductArea(faClass.getFunctionalArea().getProductArea().getName());
 
-                        List<String> issueList = getIssueList(faClass.getFunctionalArea(),functionalAreaClassList);
+        @Override
+        public List<IssueSearchResult> findFunctionalAreasForIssueId2(String jiraIssueId) {
 
-                        result.setJiraIssueIds(issueList);
-                        result.setPercentage(calculatePercentage(issueList.size(),functionalAreaClassList.size()));
+            List<IssueSearchResult> resultList = new ArrayList<>();
+//          remove spaces in jiraIssueId and set to uppercase.
+            String jiraId = jiraIssueId.replaceAll(" ","").toUpperCase();
+            final List<IssueId> issueId = issueIdRepository.findByIssueId(jiraId);
+            final List<ModuleClass> modifiedClasses = moduleClassRepository.findByIssueListIn(issueId);
+            for (ModuleClass moduleClass: modifiedClasses){
+                String module = moduleClass.getModule();
+                String classPath = moduleClass.getClassPath();
+                List<FunctionalAreaClass> functionalAreaClasses = moduleClass.getFunctionalAreaClasses();
+                HashMap<String,List<String>> functionalAreaMap = getFunctionalAreasAndIssueIdList(functionalAreaClasses);
 
-                        resultList.add(result);
+                for (HashMap.Entry<String,List<String>> entry : functionalAreaMap.entrySet()){
+                    IssueSearchResult result = new IssueSearchResult(classPath,module,entry.getKey());
+                    String issueList = "";
+                    for (String s:entry.getValue()){
+                        issueList = issueList.concat(s+",");
                     }
+                    issueList = issueList+"\b";
+
+                    double percentage = calculatePercentage(entry.getValue().size(),functionalAreaMap.keySet().size());
+                    result.setPercentage(percentage);
+                    result.setIssueList(issueList);
+                    resultList.add(result);
                 }
-                return resultList;
-            }catch (Exception e){
-                e.printStackTrace();
+
             }
+            return resultList;
         }
-        return resultList;
-    }
+
+        private HashMap<String,List<String>> getFunctionalAreasAndIssueIdList(List<FunctionalAreaClass> functionalAreaClasses){
+            HashMap<String,List<String>> functionalAreaMap = new HashMap<>();
+            for (FunctionalAreaClass faClass:functionalAreaClasses)
+            {
+                if (faClass.getFunctionalArea() == null){
+                    continue;
+                }
+                String functionalArea = faClass.getFunctionalArea().getName();
+                String issue_Id = faClass.getJiraIssueId();
+
+                if (functionalAreaMap.containsKey(functionalArea)){
+                    functionalAreaMap.get(functionalArea).add(issue_Id);
+                }else {
+                    List<String> issueList = new ArrayList<>();
+                    issueList.add(issue_Id);
+                    functionalAreaMap.put(functionalArea,issueList);
+                }
+
+            }
+            return functionalAreaMap;
+        }
+
 
 
     @Override

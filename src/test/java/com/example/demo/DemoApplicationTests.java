@@ -42,27 +42,24 @@ public class DemoApplicationTests {
 	@Autowired
 	FindFunctionalAreaByClassService findFunctionalAreaByClassService;
 
-//	@Test
-////	public void testFunctionalAreaFinder() throws Exception{
-////        List<IssueSearchResult> list = functionalAreaFinderService.findFunctionalAreasForIssueId("IMOD-86354");
-////        for(IssueSearchResult result:list) {
-////            System.out.println(result.getClassPath()+"\n"+result.getModule()+"\n"+result.getFunctionalAreas()+"\n"+result.getPercentage());
-////            for(String ids:result.getJiraIssueIds()) {
-////				System.out.println(ids);
-////			}
-////        }
-////	}
-
 	@Test
-	public void testFindFAByClass(){
-		List<IssueSearchResult> list = findFunctionalAreaByClassService.findFunctionalAreasByClass("se.cambio.cosmic.eped.impl.ServiceConfiguration");
-		for(IssueSearchResult result:list) {
-			System.out.println(result.getClassPath()+"\n"+result.getModule()+"\n"+result.getFunctionalAreas()+"\n"+result.getProductArea()+"\n"+result.getPercentage());
-			for(String ids:result.getJiraIssueIds()) {
-				System.out.println(ids);
-			}
-		}
+	public void testFunctionalAreaFinder() throws Exception{
+        List<IssueSearchResult> list = functionalAreaFinderService.findFunctionalAreasForIssueId2("IMOD-84705");
+        for(IssueSearchResult result:list) {
+            System.out.println(result.getClassPath()+"\t"+result.getModule()+"\t"+result.getFunctionalAreas()+"\t"+result.getPercentage()+"\t"+result.getIssueList()+"\n");
+        }
 	}
+
+//	@Test
+//	public void testFindFAByClass(){
+//		List<IssueSearchResult> list = findFunctionalAreaByClassService.findFunctionalAreasByClass("se.cambio.cosmic.eped.impl.ServiceConfiguration");
+//		for(IssueSearchResult result:list) {
+//			System.out.println(result.getClassPath()+"\n"+result.getModule()+"\n"+result.getFunctionalAreas()+"\n"+result.getProductArea()+"\n"+result.getPercentage());
+//			for(String ids:result.getJiraIssueIds()) {
+//				System.out.println(ids);
+//			}
+//		}
+//	}
 
 //	@Test
 //	public void productAreaTest() throws Exception {

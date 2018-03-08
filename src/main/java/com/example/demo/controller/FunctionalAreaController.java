@@ -23,7 +23,7 @@ public class FunctionalAreaController {
     public @ResponseBody
     List<IssueSearchResult> findFunctionalAreasForIssueId(@RequestBody final String jiraIssueId)
     {
-        List<IssueSearchResult> resultList = functionalAreaFinderService.findFunctionalAreasForIssueId(jiraIssueId);
+        List<IssueSearchResult> resultList = functionalAreaFinderService.findFunctionalAreasForIssueId2(jiraIssueId);
         return resultList;
     }
 

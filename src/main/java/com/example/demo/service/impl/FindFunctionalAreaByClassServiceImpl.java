@@ -24,33 +24,33 @@ public class FindFunctionalAreaByClassServiceImpl implements FindFunctionalAreaB
     @Override
     public List<IssueSearchResult> findFunctionalAreasByClass(String classPath){
         List<IssueSearchResult> resultList = new ArrayList<>();
-        if (classPath != null && classPath.length()> 0) {
-            try {
-                if(!classPath.endsWith(".java")){
-                    classPath = classPath + ".java";
-                }
-                final ModuleClass moduleClass = moduleClassRepository.findByClassPath(classPath);
-                List<FunctionalAreaClass> functionalAreaClassList = moduleClass.getFunctionalAreaClasses();
-                for (FunctionalAreaClass faClass:functionalAreaClassList)
-                {
-                    IssueSearchResult result = new IssueSearchResult();
-                    result.setClassPath(classPath);
-                    result.setModule(moduleClass.getModule());
-                    result.setFunctionalArea(faClass.getFunctionalArea().getName());
-                    result.setProductArea(faClass.getFunctionalArea().getProductArea().getName());
-
-                    List<String> issueList = functionalAreaFinderService.getIssueList(faClass.getFunctionalArea(), functionalAreaClassList);
-
-                    result.setJiraIssueIds(issueList);
-                    result.setPercentage(functionalAreaFinderService.calculatePercentage(issueList.size(), functionalAreaClassList.size()));
-
-                    resultList.add(result);
-                }
-                return resultList;
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+//        if (classPath != null && classPath.length()> 0) {
+//            try {
+//                if(!classPath.endsWith(".java")){
+//                    classPath = classPath + ".java";
+//                }
+//                final ModuleClass moduleClass = moduleClassRepository.findByClassPath(classPath);
+//                List<FunctionalAreaClass> functionalAreaClassList = moduleClass.getFunctionalAreaClasses();
+//                for (FunctionalAreaClass faClass:functionalAreaClassList)
+//                {
+//                    IssueSearchResult result = new IssueSearchResult();
+//                    result.setClassPath(classPath);
+//                    result.setModule(moduleClass.getModule());
+//                    result.setFunctionalArea(faClass.getFunctionalArea().getName());
+//                    result.setProductArea(faClass.getFunctionalArea().getProductArea().getName());
+//
+//                    List<String> issueList = functionalAreaFinderService.getIssueList(faClass.getFunctionalArea(), functionalAreaClassList);
+//
+//                    result.setJiraIssueIds(issueList);
+//                    result.setPercentage(functionalAreaFinderService.calculatePercentage(issueList.size(), functionalAreaClassList.size()));
+//
+//                    resultList.add(result);
+//                }
+//                return resultList;
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
+//        }
         return resultList;
     }
 }

@@ -10,7 +10,16 @@ public class IssueSearchResult {
     private String functionalArea;
     private String productArea;
     private double percentage;
-    private List<String> jiraIssueIds;
+    private String issueList;
+//    private List<String> jiraIssueIds;
+
+    public IssueSearchResult(String classPath,String module,String functionalArea)
+    {
+        this.classPath = classPath;
+        this.module = module;
+        this.functionalArea = functionalArea;
+//        this.jiraIssueIds = jiraIssueIds;
+    }
 
     public String getClassPath() {
         return classPath;
@@ -44,13 +53,13 @@ public class IssueSearchResult {
         this.percentage = percentage;
     }
 
-    public List<String> getJiraIssueIds() {
-        return jiraIssueIds;
-    }
-
-    public void setJiraIssueIds(List<String> jiraIssueIds) {
-        this.jiraIssueIds = jiraIssueIds;
-    }
+//    public List<String> getJiraIssueIds() {
+//        return jiraIssueIds;
+//    }
+//
+//    public void setJiraIssueIds(List<String> jiraIssueIds) {
+//        this.jiraIssueIds = jiraIssueIds;
+//    }
 
     public String getProductArea() {
         return productArea;
@@ -58,5 +67,13 @@ public class IssueSearchResult {
 
     public void setProductArea(String productArea) {
         this.productArea = productArea;
+    }
+
+    public String getIssueList() {
+        return issueList;
+    }
+
+    public void setIssueList(String issueList) {
+        this.issueList = issueList;
     }
 }
