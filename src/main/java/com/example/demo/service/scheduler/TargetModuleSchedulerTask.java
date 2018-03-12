@@ -24,7 +24,7 @@ public class TargetModuleSchedulerTask {
     public void execute() {
         try {
             log.info("Scheduler started to update tables for target modules " + new DateTime());
-            targetModuleSchedulerService.updateTablesForTargetModules();
+//            targetModuleSchedulerService.updateTablesForTargetModules();
             log.info("Completed update tables for target modules " + new DateTime());
         } catch (Exception e) {
             e.printStackTrace();

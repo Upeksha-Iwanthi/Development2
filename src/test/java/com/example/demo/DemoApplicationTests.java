@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import com.example.demo.Data.IssueSearchResult;
+import com.example.demo.Data.IssueSearchResultRow;
+import com.example.demo.controller.FunctionalAreaController;
 import com.example.demo.repository.*;
 import com.example.demo.service.*;
 import org.junit.Test;
@@ -40,20 +42,23 @@ public class DemoApplicationTests {
     FunctionalAreaFinderService functionalAreaFinderService;
 
 	@Autowired
+	FunctionalAreaController functionalAreaController;
+
+	@Autowired
 	FindFunctionalAreaByClassService findFunctionalAreaByClassService;
 
-	@Test
-	public void testFunctionalAreaFinder() throws Exception{
-        List<IssueSearchResult> list = functionalAreaFinderService.findFunctionalAreasForIssueId2("IMOD-84705");
-        for(IssueSearchResult result:list) {
-            System.out.println(result.getClassPath()+"\t"+result.getModule()+"\t"+result.getFunctionalAreas()+"\t"+result.getPercentage()+"\t"+result.getIssueList()+"\n");
-        }
-	}
+//	@Test
+//	public void testFunctionalAreaFinder() throws Exception{
+//        IssueSearchResult list = functionalAreaController.findFunctionalAreasForIssueId("IMOD-84705");
+//        for(IssueSearchResultRow result:list.getIssueSearchResultList()) {
+//            System.out.println(result.getClassPath()+"\t"+result.getModule()+"\t"+result.getFunctionalAreas()+"\t"+result.getPercentage()+"\t"+result.getIssueList()+"\n");
+//        }
+//	}
 
 //	@Test
 //	public void testFindFAByClass(){
-//		List<IssueSearchResult> list = findFunctionalAreaByClassService.findFunctionalAreasByClass("se.cambio.cosmic.eped.impl.ServiceConfiguration");
-//		for(IssueSearchResult result:list) {
+//		List<IssueSearchResultRow> list = findFunctionalAreaByClassService.findFunctionalAreasByClass("se.cambio.cosmic.eped.impl.ServiceConfiguration");
+//		for(IssueSearchResultRow result:list) {
 //			System.out.println(result.getClassPath()+"\n"+result.getModule()+"\n"+result.getFunctionalAreas()+"\n"+result.getProductArea()+"\n"+result.getPercentage());
 //			for(String ids:result.getJiraIssueIds()) {
 //				System.out.println(ids);

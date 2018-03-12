@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.Data.IssueSearchResult;
+import com.example.demo.Data.IssueSearchResultRow;
 import com.example.demo.persistence.FunctionalArea;
 import com.example.demo.persistence.FunctionalAreaClass;
 import com.example.demo.persistence.IssueId;
@@ -32,9 +33,10 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
 
 
         @Override
-        public List<IssueSearchResult> findFunctionalAreasForIssueId2(String jiraIssueId) {
+        public IssueSearchResult findFunctionalAreasForIssueId2(String jiraIssueId) {
 
-            List<IssueSearchResult> resultList = new ArrayList<>();
+            IssueSearchResult issueSearchResult = new IssueSearchResult();
+            List<IssueSearchResultRow> resultList = new ArrayList<>();
 //          remove spaces in jiraIssueId and set to uppercase.
             String jiraId = jiraIssueId.replaceAll(" ","").toUpperCase();
             final List<IssueId> issueId = issueIdRepository.findByIssueId(jiraId);
@@ -46,7 +48,7 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
                 HashMap<String,List<String>> functionalAreaMap = getFunctionalAreasAndIssueIdList(functionalAreaClasses);
 
                 for (HashMap.Entry<String,List<String>> entry : functionalAreaMap.entrySet()){
-                    IssueSearchResult result = new IssueSearchResult(classPath,module,entry.getKey());
+                    IssueSearchResultRow result = new IssueSearchResultRow(classPath,module,entry.getKey());
                     String issueList = "";
                     for (String s:entry.getValue()){
                         issueList = issueList.concat(s+",");
@@ -60,7 +62,9 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
                 }
 
             }
-            return resultList;
+            issueSearchResult.setMessage("result");
+            issueSearchResult.setIssueSearchResultList(resultList);
+            return issueSearchResult;
         }
 
         private HashMap<String,List<String>> getFunctionalAreasAndIssueIdList(List<FunctionalAreaClass> functionalAreaClasses){

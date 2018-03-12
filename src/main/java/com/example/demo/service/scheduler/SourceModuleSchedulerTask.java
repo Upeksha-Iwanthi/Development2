@@ -21,7 +21,7 @@ public class SourceModuleSchedulerTask {
     public void execute() {
         try {
             log.info("Scheduler started to update tables for target modules " + new DateTime());
-            sourceModuleSchedulerService.updateTablesForSourceModules();
+//            sourceModuleSchedulerService.updateTablesForSourceModules();
             log.info("Completed update tables for target modules " + new DateTime());
         } catch (Exception e) {
             e.printStackTrace();

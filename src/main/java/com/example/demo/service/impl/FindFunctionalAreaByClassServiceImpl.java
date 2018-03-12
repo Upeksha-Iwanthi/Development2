@@ -1,8 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.Data.IssueSearchResult;
-import com.example.demo.persistence.FunctionalAreaClass;
-import com.example.demo.persistence.ModuleClass;
+import com.example.demo.Data.IssueSearchResultRow;
 import com.example.demo.repository.ModuleClassRepository;
 import com.example.demo.service.FindFunctionalAreaByClassService;
 import com.example.demo.service.FunctionalAreaFinderService;
@@ -22,8 +20,8 @@ public class FindFunctionalAreaByClassServiceImpl implements FindFunctionalAreaB
     FunctionalAreaFinderService functionalAreaFinderService;
 
     @Override
-    public List<IssueSearchResult> findFunctionalAreasByClass(String classPath){
-        List<IssueSearchResult> resultList = new ArrayList<>();
+    public List<IssueSearchResultRow> findFunctionalAreasByClass(String classPath){
+        List<IssueSearchResultRow> resultList = new ArrayList<>();
 //        if (classPath != null && classPath.length()> 0) {
 //            try {
 //                if(!classPath.endsWith(".java")){
@@ -33,7 +31,7 @@ public class FindFunctionalAreaByClassServiceImpl implements FindFunctionalAreaB
 //                List<FunctionalAreaClass> functionalAreaClassList = moduleClass.getFunctionalAreaClasses();
 //                for (FunctionalAreaClass faClass:functionalAreaClassList)
 //                {
-//                    IssueSearchResult result = new IssueSearchResult();
+//                    IssueSearchResultRow result = new IssueSearchResultRow();
 //                    result.setClassPath(classPath);
 //                    result.setModule(moduleClass.getModule());
 //                    result.setFunctionalArea(faClass.getFunctionalArea().getName());

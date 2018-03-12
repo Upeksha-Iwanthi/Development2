@@ -35,7 +35,8 @@ public class JiraServiceImpl implements JiraService {
     {
         try
         {
-            URI jiraServerURI = new URI("https://issues.cambio.se");
+            URI jiraServerURI = new URI("http://jira-rel.cambio.se");
+            //http://jira-rel.cambio.se/issues/?jql=
             JerseyJiraRestClientFactory factory = new JerseyJiraRestClientFactory();
             //TODO Need to provide a valid username and a password
             JiraRestClient client = factory.create(jiraServerURI, new BasicHttpAuthenticationHandler("Jira_test", "QazWsx123"));

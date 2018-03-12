@@ -19,18 +19,20 @@ public class ModulesController {
     @Autowired
     private ModulesRepository modulesRepository;
 
+    @CrossOrigin(origins = "*")
+    @RequestMapping( path = "api/getAllBranches", method = RequestMethod.GET)
+    public @ResponseBody Iterable<Modules> findBranches()
+    {
+        return modulesRepository.findAll();
+    }
 
     @CrossOrigin(origins = "*")
     @RequestMapping( path = "api/saveModules", method = RequestMethod.POST)
     public @ResponseBody
-    ModuleSaveResponse saveBranchData(@RequestBody final String branchURL , final String type)
+    ModuleSaveResponse saveBranchData(@RequestBody Modules branch)
     {
-        Modules branch = new Modules();
         final ModuleSaveResponse response = new ModuleSaveResponse();
-
         branch.setRevision(0l);
-        branch.setSvnURL(branchURL);
-        branch.setType(type);
 
         try {
             final Modules  data = modulesService.saveData(branch);
