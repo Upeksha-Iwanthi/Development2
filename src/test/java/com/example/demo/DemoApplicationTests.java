@@ -47,14 +47,14 @@ public class DemoApplicationTests {
 	@Autowired
 	FindFunctionalAreaByClassService findFunctionalAreaByClassService;
 
-//	@Test
-//	public void testFunctionalAreaFinder() throws Exception{
-//        IssueSearchResult list = functionalAreaController.findFunctionalAreasForIssueId("IMOD-84705");
-//        for(IssueSearchResultRow result:list.getIssueSearchResultList()) {
-//            System.out.println(result.getClassPath()+"\t"+result.getModule()+"\t"+result.getFunctionalAreas()+"\t"+result.getPercentage()+"\t"+result.getIssueList()+"\n");
-//        }
-//	}
 
+	@Test
+	public void testFunctionalAreaFinder() throws Exception{
+		IssueSearchResult list = functionalAreaController.findFunctionalAreasForIssueId("IMOD-26863");
+		for(IssueSearchResultRow result:list.getIssueSearchResultList()) {
+			System.out.println(result.getClassPath()+"\t"+result.getModule()+"\t"+result.getFunctionalAreas()+"\t"+result.getPercentage()+"\t"+result.getIssueList()+"\n");
+		}
+	}
 //	@Test
 //	public void testFindFAByClass(){
 //		List<IssueSearchResultRow> list = findFunctionalAreaByClassService.findFunctionalAreasByClass("se.cambio.cosmic.eped.impl.ServiceConfiguration");

@@ -55,7 +55,7 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
                     }
                     issueList = issueList+"\b";
 
-                    double percentage = calculatePercentage(entry.getValue().size(),functionalAreaMap.keySet().size());
+                    double percentage = calculatePercentage(entry.getValue().size(),functionalAreaMap.entrySet().size());
                     result.setPercentage(percentage);
                     result.setIssueList(issueList);
                     resultList.add(result);
@@ -90,7 +90,6 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
         }
 
 
-
     @Override
     public List<String> getIssueList(FunctionalArea functionalArea, List<FunctionalAreaClass> functionalAreaClasses){
         List<String> issueIdList = new ArrayList<>();
@@ -105,8 +104,7 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
     public double calculatePercentage(int itemCount, int totalCount)
     {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        return Double.parseDouble(decimalFormat.format((double) itemCount * 100 / totalCount));
-
+        return Double.parseDouble(decimalFormat.format((double) (itemCount / totalCount)*100));
     }
 
 }
