@@ -39,28 +39,35 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
             List<IssueSearchResultRow> resultList = new ArrayList<>();
 //          remove spaces in jiraIssueId and set to uppercase.
             String jiraId = jiraIssueId.replaceAll(" ","").toUpperCase();
+//          get IssueId list from DB that have given jira id
             final List<IssueId> issueId = issueIdRepository.findByIssueId(jiraId);
+//          get Module class list from DB that mapped with above IssueId
             final List<ModuleClass> modifiedClasses = moduleClassRepository.findByIssueListIn(issueId);
-            for (ModuleClass moduleClass: modifiedClasses){
+
+            for (ModuleClass moduleClass: modifiedClasses)
+            {
                 String module = moduleClass.getModule();
                 String classPath = moduleClass.getClassPath();
                 List<FunctionalAreaClass> functionalAreaClasses = moduleClass.getFunctionalAreaClasses();
+                //get functional areas and resolved JIRA issue id list foe each functional area
                 HashMap<String,List<String>> functionalAreaMap = getFunctionalAreasAndIssueIdList(functionalAreaClasses);
 
-                for (HashMap.Entry<String,List<String>> entry : functionalAreaMap.entrySet()){
+//              create IssueSearchResultRow for each functional area.
+                for (HashMap.Entry<String,List<String>> entry : functionalAreaMap.entrySet())
+                {
                     IssueSearchResultRow result = new IssueSearchResultRow(classPath,module,entry.getKey());
                     String issueList = "";
+                    // issue list put into one string with comma separated
                     for (String s:entry.getValue()){
                         issueList = issueList.concat(s+",");
                     }
-                    issueList = issueList+"\b";
+                    issueList = issueList+"\b";//remove last comma
 
-                    double percentage = calculatePercentage(entry.getValue().size(),functionalAreaMap.entrySet().size());
+                    double percentage = calculatePercentage(entry.getValue().size(),functionalAreaMap.size());//percentage of functional area
                     result.setPercentage(percentage);
                     result.setIssueList(issueList);
-                    resultList.add(result);
+                    resultList.add(result);// add IssueSearchResultRow into List
                 }
-
             }
             issueSearchResult.setMessage("result");
             issueSearchResult.setIssueSearchResultList(resultList);
@@ -104,7 +111,7 @@ public class FunctionalAreaFinderServiceImpl implements FunctionalAreaFinderServ
     public double calculatePercentage(int itemCount, int totalCount)
     {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        return Double.parseDouble(decimalFormat.format((double) (itemCount / totalCount)*100));
+        return Double.parseDouble(decimalFormat.format((double) itemCount *100/ totalCount));
     }
 
 }

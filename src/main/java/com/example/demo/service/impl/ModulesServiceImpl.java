@@ -40,9 +40,10 @@ public class ModulesServiceImpl implements ModulesService {
         if (isDuplicate)
         {
             throw new RuntimeException("Duplicate Detected");
-        }else if (isInvalidRepository(module))
+        }
+        else if (isInvalidRepository(module))
         {
-            throw new RuntimeException("Invalid Repository ");
+            throw new RuntimeException("Invalid Repository");
         }
         return moduleRepository.save(module);
     }
@@ -53,10 +54,10 @@ public class ModulesServiceImpl implements ModulesService {
         if (db.isEmpty())
         {
             return false;
-        }else
+        }
+        else
         {
-            final Modules dbBranch = db.get(0);
-            return dbBranch.getId() != module.getId();
+            return true;
         }
     }
 
